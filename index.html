@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#f57c00" />
+  <meta name="description" content="Henrik-Test-Hawks – digitale Vereins-App der TG Hochheim Hawks" />
+  <title>Henrik-Test-Hawks</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topbar">
+      <button class="top-action" data-modal="requestModal" aria-label="Anfrage öffnen">
+        <span class="icon-circle">!</span>
+        <span>Anfrage</span>
+      </button>
+
+      <div class="brand" role="banner">
+        <div class="brand-mark">H</div>
+        <div>
+          <strong>Henrik-Test-Hawks</strong>
+          <small>TG Hochheim Basketball</small>
+        </div>
+      </div>
+
+      <button class="top-action user-action" data-modal="userModal" aria-label="Benutzermenü öffnen">
+        <span class="user-icon">👤</span>
+        <span>Benutzer</span>
+      </button>
+    </header>
+
+    <main>
+      <section class="hero">
+        <div class="hero-content">
+          <span class="eyebrow">TG Hochheim Hawks</span>
+          <h1>Dein digitaler Hawks-Hub</h1>
+          <p>News, Teams, Spielbetrieb, Service und Vereinsleben an einem Ort.</p>
+        </div>
+        <div class="hero-ball" aria-hidden="true"></div>
+      </section>
+
+      <section class="dashboard" aria-label="Hauptmodule">
+        <button class="module-card" data-module="news">
+          <span class="card-icon">📰</span>
+          <span class="card-copy"><strong>News</strong><small>Artikel, Instagram & Website</small></span>
+        </button>
+        <button class="module-card" data-module="teams">
+          <span class="card-icon">🏀</span>
+          <span class="card-copy"><strong>Teams</strong><small>Männer- und Frauenmannschaften</small></span>
+        </button>
+        <button class="module-card" data-module="games">
+          <span class="card-icon">🏆</span>
+          <span class="card-copy"><strong>Spielbetrieb</strong><small>Spiele, Termine, Tabellen</small></span>
+        </button>
+        <button class="module-card" data-module="about">
+          <span class="card-icon">🦅</span>
+          <span class="card-copy"><strong>Über uns</strong><small>Historie, Werte & Personen</small></span>
+        </button>
+        <button class="module-card" data-module="service">
+          <span class="card-icon">🧰</span>
+          <span class="card-copy"><strong>Service</strong><small>Hallen, Downloads, Anträge</small></span>
+        </button>
+        <button class="module-card" data-module="digital">
+          <span class="card-icon">💻</span>
+          <span class="card-copy"><strong>Digitale Abteilung</strong><small>Abrechnung & Leitung</small></span>
+        </button>
+        <button class="module-card" data-module="partners">
+          <span class="card-icon">🤝</span>
+          <span class="card-copy"><strong>Partner & Sponsoren</strong><small>Verbände, Förderer & Unterstützer</small></span>
+        </button>
+        <button class="module-card" data-module="gallery">
+          <span class="card-icon">📸</span>
+          <span class="card-copy"><strong>Galerie / Momente</strong><small>Bilder, Videos & Erfolge</small></span>
+        </button>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <button data-modal="imprintModal">ⓘ <span>Impressum</span></button>
+      <button data-modal="contactModal">✉ <span>Kontakt</span></button>
+      <button data-modal="privacyModal">🔒 <span>Datenschutz</span></button>
+      <button data-modal="feedbackModal">💬 <span>Feedback</span></button>
+    </footer>
+  </div>
+
+  <div class="modal" id="userModal" aria-hidden="true">
+    <div class="modal-panel compact">
+      <button class="close-modal" aria-label="Schließen">×</button>
+      <h2>Benutzer</h2>
+      <p>Wähle eine Option:</p>
+      <div class="action-stack">
+        <button class="primary-btn">Log-in</button>
+        <button class="secondary-btn">Neu? Hier registrieren</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal" id="requestModal" aria-hidden="true">
+    <div class="modal-panel">
+      <button class="close-modal" aria-label="Schließen">×</button>
+      <h2>Anfrage</h2>
+      <form class="app-form" data-demo-form>
+        <label>E-Mail-Adresse<input type="email" placeholder="name@beispiel.de" required /></label>
+        <label>Thema
+          <select required>
+            <option value="">Bitte auswählen</option>
+            <option>Training</option>
+            <option>Spiel</option>
+            <option>Bitte Rückmeldung</option>
+          </select>
+        </label>
+        <label>Nachricht<textarea rows="6" placeholder="Worum geht es?" required></textarea></label>
+        <button class="primary-btn" type="submit">Anfrage senden</button>
+      </form>
+    </div>
+  </div>
+
+  <div class="modal" id="imprintModal" aria-hidden="true">
+    <div class="modal-panel">
+      <button class="close-modal" aria-label="Schließen">×</button>
+      <h2>Impressum</h2>
+      <div class="info-box">
+        <strong>TG Hochheim Hawks</strong>
+        <p>Adresse: Musterstraße 1, 65239 Hochheim am Main</p>
+        <p>E-Mail: info@tg-hochheim-hawks.de</p>
+        <p>Homepage: www.tg-hochheim-hawks.de</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal" id="contactModal" aria-hidden="true">
+    <div class="modal-panel">
+      <button class="close-modal" aria-label="Schließen">×</button>
+      <h2>Kontakt</h2>
+      <div class="contact-list">
+        <div><strong>Vorstand</strong><a href="mailto:vorstand@tg-hochheim-hawks.de">vorstand@tg-hochheim-hawks.de</a></div>
+        <div><strong>Sportliche Leitung</strong><a href="mailto:sl@tg-hochheim-hawks.de">sl@tg-hochheim-hawks.de</a></div>
+        <div><strong>Spielbetrieb</strong><a href="mailto:spielbetrieb@tg-hochheim-hawks.de">spielbetrieb@tg-hochheim-hawks.de</a></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal" id="privacyModal" aria-hidden="true">
+    <div class="modal-panel">
+      <button class="close-modal" aria-label="Schließen">×</button>
+      <h2>Datenschutz</h2>
+      <p>Hinweis zum Datenschutz und Datenschutzerklärung der App</p>
+      <div class="info-box muted">Dies ist ein Platzhalter. Vor einer Veröffentlichung sollte hier eine rechtlich geprüfte Datenschutzerklärung ergänzt werden.</div>
+    </div>
+  </div>
+
+  <div class="modal" id="feedbackModal" aria-hidden="true">
+    <div class="modal-panel">
+      <button class="close-modal" aria-label="Schließen">×</button>
+      <h2>Feedback</h2>
+      <form class="app-form" data-demo-form>
+        <label>Dein Feedback<textarea rows="7" placeholder="Was gefällt dir? Was können wir verbessern?" required></textarea></label>
+        <button class="primary-btn" type="submit">SEND</button>
+      </form>
+    </div>
+  </div>
+
+  <div class="modal" id="moduleModal" aria-hidden="true">
+    <div class="modal-panel module-panel">
+      <button class="close-modal" aria-label="Schließen">×</button>
+      <button class="back-btn" id="moduleBack" hidden>← Zurück</button>
+      <div id="moduleContent"></div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <script src="app.js"></script>
+</body>
+</html>
