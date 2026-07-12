@@ -82,22 +82,6 @@ const moduleData = {
   }
 };
 
-
-const externalLinks = {
-  website: "https://www.hochheim-hawks.de/index.php?id=7",
-  instagram: "https://www.instagram.com/hochheimhawks?igsh=MTY2NjJ2Zmd3aTJuZQ==",
-  newsArticles: [
-    {
-      title: "Deutsche Basketball-Ü60-Auswahl gastiert in Hochheim",
-      url: "https://hochheim-hawks.de/news-ansicht/deutsche-basketball-ue-60-auswahl-gastiert-in-hochheim.html"
-    },
-    {
-      title: "TG Hochheim Hawks gewinnen WU18-Hessenpokal 2026",
-      url: "https://hochheim-hawks.de/news-ansicht/tg-hochheim-hawks-gewinnen-wu18-hessenpokal-2026.html"
-    }
-  ]
-};
-
 const teamDetails = {
   menA: { title: "Männer – Mannschaft A", icon: "⛹️‍♂️" },
   menB: { title: "Männer – Mannschaft B", icon: "🏀" },
@@ -162,42 +146,6 @@ function cardGrid(items, actionPrefix = "") {
     </button>`).join("")}</div>`;
 }
 
-function renderNews(push = true) {
-  if (push) historyStack.push({ type: "news" });
-  moduleContent.innerHTML = `
-    <div class="module-header"><span class="eyebrow">📰 Modul</span><h2>News</h2><p>Aktuelles von den TG Hochheim Hawks.</p></div>
-    <div class="subgrid">
-      <button class="subcard orange" data-news-action="articles"><span class="subcard-icon">🗞️</span><strong>News-Artikel</strong></button>
-      <button class="subcard" data-external-url="${externalLinks.instagram}"><span class="subcard-icon">📱</span><strong>Instagram</strong></button>
-      <button class="subcard" data-external-url="${externalLinks.website}"><span class="subcard-icon">🌐</span><strong>Webseite</strong></button>
-    </div>
-    <div class="note">Externe Seiten werden in einem neuen Browser-Tab geöffnet.</div>`;
-  moduleBack.hidden = historyStack.length <= 1;
-  bindNewsActions();
-}
-
-function renderNewsArticles(push = true) {
-  if (push) historyStack.push({ type: "newsArticles" });
-  moduleContent.innerHTML = `
-    <div class="module-header"><span class="eyebrow">🗞️ News</span><h2>News-Artikel</h2><p>Wähle einen Artikel der TG Hochheim Hawks.</p></div>
-    <div class="item-list">${externalLinks.newsArticles.map(article => `
-      <a class="item-row" href="${article.url}" target="_blank" rel="noopener noreferrer">
-        <span>↗️</span><div><strong>${article.title}</strong><div class="muted">Artikel auf hochheim-hawks.de öffnen</div></div>
-      </a>`).join("")}</div>`;
-  moduleBack.hidden = false;
-}
-
-function bindNewsActions() {
-  const articleButton = moduleContent.querySelector('[data-news-action="articles"]');
-  if (articleButton) articleButton.addEventListener("click", () => renderNewsArticles());
-
-  moduleContent.querySelectorAll("[data-external-url]").forEach(button => {
-    button.addEventListener("click", () => {
-      window.open(button.dataset.externalUrl, "_blank", "noopener,noreferrer");
-    });
-  });
-}
-
 function renderStandard(key, push = true) {
   const data = moduleData[key];
   if (push) historyStack.push({ type: "standard", key });
@@ -250,9 +198,7 @@ document.querySelectorAll("[data-module]").forEach(btn => {
   btn.addEventListener("click", () => {
     historyStack = [];
     const key = btn.dataset.module;
-    if (key === "teams") renderTeams();
-    else if (key === "news") renderNews();
-    else renderStandard(key);
+    if (key === "teams") renderTeams(); else renderStandard(key);
     openModal("moduleModal");
   });
 });
@@ -262,8 +208,6 @@ moduleBack.addEventListener("click", () => {
   historyStack.pop();
   const previous = historyStack[historyStack.length - 1];
   if (previous.type === "teams") renderTeams(false);
-  if (previous.type === "news") renderNews(false);
-  if (previous.type === "newsArticles") renderNewsArticles(false);
   if (previous.type === "teamCategory") renderTeamCategory(previous.category, false);
   if (previous.type === "teamDetail") renderTeamDetail(previous.teamKey, false);
   if (previous.type === "standard") renderStandard(previous.key, false);
