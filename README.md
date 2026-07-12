@@ -1,41 +1,35 @@
-# Henrik-Test-Hawks
+# Henrik-Test-Hawks – Version 2.0
 
-Responsive Web-App-Prototyp für die TG Hochheim Hawks in Orange, Schwarz und Weiß.
+Responsive Web-App für die TG Hochheim Hawks in Orange, Schwarz und Weiß.
 
-## Start lokal
+## Inhalt
 
-1. Repository herunterladen oder klonen.
-2. `index.html` im Browser öffnen.
+- News mit News-Artikeln, Instagram und Hawks-Webseite
+- Teams mit Männer-, Frauen- und Jugendmannschaften
+- Spielbetrieb mit Link zum HBV-Spielbetrieb
+- Partner & Sponsoren mit Förderverein und TG Hochheim
+- Galerie / Momente mit Legends / Wall of Fame
+- Kachelbilder für News, Teams und Galerie als echte `<img>`-Elemente
+- Anfrage-, Benutzer-, Kontakt-, Datenschutz- und Feedback-Dialoge
 
-Alternativ mit einem lokalen Webserver:
+## Projektstruktur
 
-```bash
-python3 -m http.server 8000
-```
-
-Danach im Browser öffnen:
-
-```text
-http://localhost:8000
-```
-
-## Veröffentlichung mit GitHub Pages
-
-1. Dateien in ein GitHub-Repository laden.
-2. In GitHub `Settings` öffnen.
-3. Unter `Pages` bei `Build and deployment` die Option `Deploy from a branch` auswählen.
-4. Branch `main` und Ordner `/ (root)` wählen.
-5. Speichern. GitHub zeigt anschließend die öffentliche URL an.
-
-## Dateien
-
-- `index.html` – Struktur der App
+- `index.html` – Aufbau der App
 - `styles.css` – Design und responsive Darstellung
-- `app.js` – Navigation, Fenster, Formulare und Modul-Inhalte
+- `app.js` – Navigation, Dialoge und Links
+- `assets/newskachel.jpg` – Bild der News-Kachel
+- `assets/teamskachel.jpg` – Bild der Teams-Kachel
+- `assets/galeriekachel.jpg` – Bild der Galerie-Kachel
 
-## Wichtige Hinweise
+## Lokal starten
 
-- Die Formulare sind derzeit Demo-Formulare und senden noch keine Daten an einen Server.
-- Adressen, E-Mail-Adressen, Datenschutztext und externe Links sind Platzhalter.
-- Für Login, Registrierung, Team-Planer und echte Daten wird später ein Backend benötigt.
-- Die verwendeten Symbole sind systembasierte Emoji-/Clipart-Symbole und benötigen keine externen Bilddateien.
+`index.html` in Safari, Firefox, Chrome oder Edge öffnen.
+
+## GitHub Pages
+
+1. Alle Dateien und den Ordner `assets` in das Repository hochladen.
+2. Änderungen mit **Commit changes** bestätigen.
+3. Unter **Settings → Pages** als Quelle **Deploy from a branch** wählen.
+4. Branch `main` und Ordner `/ (root)` auswählen und speichern.
+
+Nach einem Commit aktualisiert GitHub Pages die veröffentlichte App automatisch.

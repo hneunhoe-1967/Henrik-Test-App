@@ -92,11 +92,23 @@ const externalLinks = {
   legends: [
     {
       title: "Niklas Krause",
-      url: "https://www.2basketballbundesliga.de/teams/kader/spieler/5591/"
+      url: "https://www.2basketballbundesliga.de/teams/kader/spieler/5591/",
+      detail: "Spielerprofil bei der 2. Basketball-Bundesliga öffnen"
     },
     {
       title: "Erik Neunhoeffer",
-      url: "https://www.2basketballbundesliga.de/teams/kader/spieler/2001852/"
+      url: "https://www.2basketballbundesliga.de/teams/kader/spieler/2001852/",
+      detail: "Spielerprofil bei der 2. Basketball-Bundesliga öffnen"
+    },
+    {
+      title: "Svea Rehders",
+      url: "https://toyota-dbbl.de/spielerin/20758/?season=2025",
+      detail: "Spielerinnenprofil bei der Toyota DBBL öffnen"
+    },
+    {
+      title: "Finja Rehders",
+      url: "https://www.hochheim-hawks.de/fileadmin/user_upload/Hawks_Steckbrief_Finja_Homepage.pdf",
+      detail: "Hawks-Steckbrief als PDF öffnen"
     }
   ],
   newsArticles: [
@@ -277,7 +289,7 @@ function renderLegends(push = true) {
     <div class="module-header"><span class="eyebrow">🌟 Galerie</span><h2>Legends / Wall of Fame</h2><p>Ausgewählte Hawks-Spieler und ihre Profile.</p></div>
     <div class="item-list">${externalLinks.legends.map(legend => `
       <a class="item-row" href="${legend.url}" target="_blank" rel="noopener noreferrer">
-        <span>🏀</span><div><strong>${legend.title}</strong><div class="muted">Spielerprofil bei der 2. Basketball-Bundesliga öffnen</div></div>
+        <span>🏀</span><div><strong>${legend.title}</strong><div class="muted">${legend.detail || "Profil öffnen"}</div></div>
       </a>`).join("")}</div>
     <div class="note">Die Profile werden in einem neuen Browser-Tab geöffnet.</div>`;
   moduleBack.hidden = false;
