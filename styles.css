@@ -163,3 +163,11 @@ a { color:#b64f00; }
   .dashboard { padding:4px 16px 28px; }
   .footer span { display:none; }
 }
+
+.top-actions-right { justify-self: end; display: flex; align-items: center; gap: 6px; }
+.install-btn { border: 1px solid var(--orange); background: transparent; color: var(--orange-light); border-radius: 12px; padding: 9px 12px; font-weight: 850; }
+.install-btn:hover { background: var(--orange); color: #111; }
+.privacy-text { line-height: 1.55; }
+.privacy-text h3 { margin: 22px 0 7px; font-size: 1.05rem; }
+.privacy-text p { margin: 8px 0; }
+@media (max-width: 720px) { .install-btn { display: none; } }

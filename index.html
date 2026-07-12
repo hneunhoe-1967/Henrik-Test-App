@@ -6,6 +6,8 @@
   <meta name="theme-color" content="#f57c00" />
   <meta name="description" content="Henrik-Test-Hawks – digitale Vereins-App der TG Hochheim Hawks" />
   <title>Henrik-Test-Hawks</title>
+  <link rel="manifest" href="manifest.webmanifest" />
+  <link rel="apple-touch-icon" href="assets/icon-192.png" />
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
@@ -24,10 +26,13 @@
         </div>
       </div>
 
-      <button class="top-action user-action" data-modal="userModal" aria-label="Benutzermenü öffnen">
+      <div class="top-actions-right">
+        <button class="install-btn" id="installApp" hidden>App installieren</button>
+        <button class="top-action user-action" data-modal="userModal" aria-label="Benutzermenü öffnen">
         <span class="user-icon">👤</span>
         <span>Benutzer</span>
-      </button>
+        </button>
+      </div>
     </header>
 
     <main>
@@ -144,9 +149,21 @@
   <div class="modal" id="privacyModal" aria-hidden="true">
     <div class="modal-panel">
       <button class="close-modal" aria-label="Schließen">×</button>
-      <h2>Datenschutz</h2>
-      <p>Hinweis zum Datenschutz und Datenschutzerklärung der App</p>
-      <div class="info-box muted">Dies ist ein Platzhalter. Vor einer Veröffentlichung sollte hier eine rechtlich geprüfte Datenschutzerklärung ergänzt werden.</div>
+      <h2>Datenschutzhinweis</h2>
+      <div class="privacy-text">
+        <p>Der Schutz Ihrer personenbezogenen Daten ist uns wichtig. Diese Web-App der <strong>TG Hochheim Hawks</strong> stellt Informationen rund um den Basketballbetrieb bereit.</p>
+        <h3>1. Verantwortliche Stelle</h3>
+        <p>TG Hochheim Hawks<br>Adresse: Musterstraße 1, 65239 Hochheim am Main<br>E-Mail: <a href="mailto:info@tg-hochheim-hawks.de">info@tg-hochheim-hawks.de</a></p>
+        <h3>2. Nutzung der App</h3>
+        <p>Die App speichert grundsätzlich keine personenbezogenen Daten dauerhaft. Daten, die Sie freiwillig über Anfrage- oder Feedbackformulare eingeben, werden in dieser Demo nur lokal verarbeitet und nicht an einen Server übertragen.</p>
+        <h3>3. Externe Links</h3>
+        <p>Beim Aufruf externer Angebote, etwa Instagram, HBV, DBBL oder verlinkter Webseiten, gelten die Datenschutzbestimmungen des jeweiligen Anbieters.</p>
+        <h3>4. Technische Bereitstellung</h3>
+        <p>Bei einer Veröffentlichung über GitHub Pages können technisch notwendige Verbindungsdaten durch den Hosting-Anbieter verarbeitet werden. Maßgeblich sind dessen Datenschutzinformationen.</p>
+        <h3>5. Ihre Rechte</h3>
+        <p>Sie haben im Rahmen der gesetzlichen Voraussetzungen insbesondere Rechte auf Auskunft, Berichtigung, Löschung, Einschränkung der Verarbeitung und Beschwerde bei einer Datenschutzaufsichtsbehörde.</p>
+        <p class="muted"><strong>Stand:</strong> Juli 2026. Dieser kompakte Hinweis ersetzt keine individuelle rechtliche Prüfung, sobald echte Benutzerkonten, Analyse-Dienste, Cookies oder serverseitige Formulare eingesetzt werden.</p>
+      </div>
     </div>
   </div>
 
@@ -171,5 +188,10 @@
 
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
   <script src="app.js"></script>
+  <script>
+    if ("serviceWorker" in navigator) {
+      window.addEventListener("load", () => navigator.serviceWorker.register("./service-worker.js"));
+    }
+  </script>
 </body>
 </html>

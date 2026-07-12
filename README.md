@@ -1,35 +1,27 @@
-# Henrik-Test-Hawks – Version 2.0
+# Henrik-Test-Hawks – Version 3.0
 
-Responsive Web-App für die TG Hochheim Hawks in Orange, Schwarz und Weiß.
+GitHub-Pages-fertige Progressive Web App (PWA) für die TG Hochheim Hawks.
 
-## Inhalt
+## Neu in Version 3.0
 
-- News mit News-Artikeln, Instagram und Hawks-Webseite
-- Teams mit Männer-, Frauen- und Jugendmannschaften
-- Spielbetrieb mit Link zum HBV-Spielbetrieb
-- Partner & Sponsoren mit Förderverein und TG Hochheim
-- Galerie / Momente mit Legends / Wall of Fame
-- Kachelbilder für News, Teams und Galerie als echte `<img>`-Elemente
-- Anfrage-, Benutzer-, Kontakt-, Datenschutz- und Feedback-Dialoge
+- Installierbar als Web-App auf unterstützten Geräten
+- Offline-Zwischenspeicherung der App-Oberfläche
+- App-Manifest und eigene App-Icons
+- kompakte Datenschutzerklärung im Footer
+- alle bisherigen Links, Team-Bereiche, News, Partner und Legends
+- Originalbilder in den Kacheln News, Teams und Galerie
 
-## Projektstruktur
+## Veröffentlichung über GitHub Pages
 
-- `index.html` – Aufbau der App
-- `styles.css` – Design und responsive Darstellung
-- `app.js` – Navigation, Dialoge und Links
-- `assets/newskachel.jpg` – Bild der News-Kachel
-- `assets/teamskachel.jpg` – Bild der Teams-Kachel
-- `assets/galeriekachel.jpg` – Bild der Galerie-Kachel
+1. Den Inhalt dieser ZIP-Datei in das bestehende Repository hochladen.
+2. Darauf achten, dass `assets` als Ordner neben `index.html` liegt.
+3. In **Settings → Pages** als Quelle `Deploy from a branch`, Branch `main` und Ordner `/(root)` wählen.
+4. Änderungen committen. GitHub Pages startet das Deployment automatisch.
 
-## Lokal starten
+## Installation auf iPhone oder iPad
 
-`index.html` in Safari, Firefox, Chrome oder Edge öffnen.
+Die veröffentlichte App in Safari öffnen, auf **Teilen** tippen und **Zum Home-Bildschirm** wählen.
 
-## GitHub Pages
+## Hinweis
 
-1. Alle Dateien und den Ordner `assets` in das Repository hochladen.
-2. Änderungen mit **Commit changes** bestätigen.
-3. Unter **Settings → Pages** als Quelle **Deploy from a branch** wählen.
-4. Branch `main` und Ordner `/ (root)` auswählen und speichern.
-
-Nach einem Commit aktualisiert GitHub Pages die veröffentlichte App automatisch.
+Formulare und Login sind derzeit Demo-Oberflächen ohne Backend. Für echte Konten, Speicherung oder E-Mail-Versand ist später ein sicherer Serverdienst bzw. Backend erforderlich.

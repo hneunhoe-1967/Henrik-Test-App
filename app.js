@@ -396,3 +396,26 @@ function showToast(message) {
   toast.classList.add("show");
   setTimeout(() => toast.classList.remove("show"), 3000);
 }
+
+
+// PWA-Installation: Browser zeigen den Button nur, wenn die App installierbar ist.
+let deferredInstallPrompt;
+const installButton = document.getElementById("installApp");
+window.addEventListener("beforeinstallprompt", event => {
+  event.preventDefault();
+  deferredInstallPrompt = event;
+  if (installButton) installButton.hidden = false;
+});
+if (installButton) {
+  installButton.addEventListener("click", async () => {
+    if (!deferredInstallPrompt) {
+      showToast("Auf iPhone/iPad: Teilen → Zum Home-Bildschirm.");
+      return;
+    }
+    deferredInstallPrompt.prompt();
+    await deferredInstallPrompt.userChoice;
+    deferredInstallPrompt = null;
+    installButton.hidden = true;
+  });
+}
+window.addEventListener("appinstalled", () => showToast("Henrik-Test-Hawks wurde installiert."));
