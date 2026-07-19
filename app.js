@@ -76,7 +76,7 @@ const moduleData = {
     icon: "📸",
     items: [
       ["🎞️", "Bilder & Videos"],
-      ["🌟", "Legends / Wall of Fame"],
+      ["🌟", "Hawks arround the World"],
       ["🏆", "Erfolge / Pokale"]
     ]
   }
@@ -87,6 +87,7 @@ const externalLinks = {
   website: "https://www.hochheim-hawks.de/index.php?id=7",
   instagram: "https://www.instagram.com/hochheimhawks?igsh=MTY2NjJ2Zmd3aTJuZQ==",
   gameSchedule: "https://www.hbv-basketball.de/spielbetrieb/",
+  aboutUs: "https://hochheim-hawks.de/ueber-uns.html",
   supportersClub: "https://www.hochheim-hawks.de/fileadmin/Dokumente/Antraege_Formulare/2015_Mitgliedsantrag_Foerderverein.pdf",
   tgHochheim: "https://www.tghochheim.de/",
   legends: [
@@ -162,6 +163,12 @@ document.querySelectorAll("[data-modal]").forEach(btn => {
   btn.addEventListener("click", () => openModal(btn.dataset.modal));
 });
 
+document.querySelectorAll("[data-chat-room]").forEach(btn => {
+  btn.addEventListener("click", () => {
+    showToast(`Chat-Room ${btn.dataset.chatRoom} ausgewählt. Die Live-Chat-Funktion kann später angebunden werden.`);
+  });
+});
+
 document.querySelectorAll(".close-modal").forEach(btn => {
   btn.addEventListener("click", () => closeModal(btn.closest(".modal")));
 });
@@ -223,6 +230,70 @@ function bindNewsActions() {
   });
 }
 
+function renderAbout(push = true) {
+  if (push) historyStack.push({ type: "about" });
+  const data = moduleData.about;
+  moduleContent.innerHTML = `
+    <div class="module-header"><span class="eyebrow">${data.icon} Modul</span><h2>${data.title}</h2><p>${data.subtitle}</p></div>
+    <div class="subgrid">
+      <button class="subcard orange"><span class="subcard-icon">📜</span><strong>Wer sind wir? – Hawks-Historie</strong></button>
+      <button class="subcard"><span class="subcard-icon">💡</span><strong>Wofür stehen wir? – Hawks-Idea</strong></button>
+      <button class="subcard orange"><span class="subcard-icon">🛠️</span><strong>Was leisten wir? – Hawks-Work</strong></button>
+      <button class="subcard"><span class="subcard-icon">🪺</span><strong>Kindeswohl – Hawks-Nest</strong></button>
+      <button class="subcard orange" data-about-action="people"><span class="subcard-icon">👥</span><strong>Aufgaben und Personen</strong></button>
+    </div>
+    <div class="note">Unter „Aufgaben und Personen“ findest du die Organisationsstruktur der Basketballabteilung.</div>`;
+  moduleBack.hidden = historyStack.length <= 1;
+  const peopleButton = moduleContent.querySelector('[data-about-action="people"]');
+  if (peopleButton) peopleButton.addEventListener("click", () => renderAboutPeople());
+}
+
+function renderAboutPeople(push = true) {
+  if (push) historyStack.push({ type: "aboutPeople" });
+  moduleContent.innerHTML = `
+    <div class="module-header"><span class="eyebrow">👥 Über uns</span><h2>Aufgaben und Personen</h2><p>So ist die Basketballabteilung der TG Hochheim Hawks organisiert.</p></div>
+
+    <div class="info-box">
+      <h3>Wer wir sind</h3>
+      <p>Die Basketballabteilung der TG Hochheim wurde am 1. Juni 1982 gegründet. Seit dem Aufstieg der 1. Damen in die Regionalliga im Jahr 2005 trägt die Abteilung den Namenszusatz „Hawks“.</p>
+      <p>Die Hawks zählen knapp 400 Mitglieder. In der Saison 2024/25 waren 16 Wettkampfmannschaften von der U10 bis zu den Senioren gemeldet. Hinzu kommen weitere Trainings- und Turniergruppen, darunter Flummis (U6), U8, Hobbydamen und Ü40- bis Ü55-Teams.</p>
+    </div>
+
+    <h3>Gewählte Abteilungsleitung</h3>
+    <div class="item-list">
+      <div class="item-row"><span>1</span><div><strong>Stefan Lehr</strong><div class="muted">Abteilungsleiter</div></div></div>
+      <div class="item-row"><span>2</span><div><strong>Sebastian Krause</strong><div class="muted">Stellvertretender Abteilungsleiter und sportliche Leitung weiblicher Bereich</div></div></div>
+      <div class="item-row"><span>3</span><div><strong>Benjamin Kammerbauer</strong><div class="muted">Kassenwart und 2. stellvertretende Abteilungsleitung</div></div></div>
+      <div class="item-row"><span>4</span><div><strong>Nico Doesseler</strong><div class="muted">Jugendwart</div></div></div>
+    </div>
+
+    <h3>Erweiterte Abteilungsleitung</h3>
+    <div class="item-list">
+      <div class="item-row"><span>🏀</span><div><strong>Georg Mesch</strong><div class="muted">Spielleitung</div></div></div>
+      <div class="item-row"><span>🗂️</span><div><strong>Britta Rehders</strong><div class="muted">Sportliche Organisation, Passwesen und Mitgliederbetreuung</div></div></div>
+      <div class="item-row"><span>♀️</span><div><strong>Sebastian Krause</strong><div class="muted">Sportliche Leitung weiblicher Bereich</div></div></div>
+      <div class="item-row"><span>♂️</span><div><strong>Daniel Kerner & Svea Rehders</strong><div class="muted">Sportliche Leitung männlicher Bereich – Senioren und Jugend</div></div></div>
+      <div class="item-row"><span>🪺</span><div><strong>Finja Rehders</strong><div class="muted">Kindeswohl und Vertrauensperson</div></div></div>
+      <div class="item-row"><span>👤</span><div><strong>Henrik Neunhoeffer</strong><div class="muted">Beisitzer</div></div></div>
+    </div>
+
+    <h3>Weitere wichtige Aufgaben</h3>
+    <div class="item-list">
+      <div class="item-row"><span>🏫</span><div><strong>Svea Rehders</strong><div class="muted">Leitung der Grundschul-AGs</div></div></div>
+      <div class="item-row"><span>📰</span><div><strong>Anne Neunhoeffer, Dagmar Gehlhaar & Georg Mesch</strong><div class="muted">Presseteam</div></div></div>
+      <div class="item-row"><span>📱</span><div><strong>Svea Rehders & Nico Doesseler</strong><div class="muted">Social-Media-Team</div></div></div>
+      <div class="item-row"><span>🌐</span><div><strong>Dagmar Gehlhaar</strong><div class="muted">Webmaster</div></div></div>
+      <div class="item-row"><span>🤝</span><div><strong>Michael Schmitt</strong><div class="muted">Sponsoring</div></div></div>
+      <div class="item-row"><span>🔐</span><div><strong>Henrik Neunhoeffer</strong><div class="muted">Datenschutzbeauftragter</div></div></div>
+      <div class="item-row"><span>❤️</span><div><strong>Martin Jung</strong><div class="muted">1. Vorsitzender des Fördervereins BBFV</div></div></div>
+      <div class="item-row"><span>🦓</span><div><strong>Aktuell vakant</strong><div class="muted">Schiedsrichterwart</div></div></div>
+    </div>
+
+    <a class="primary-btn inline-link" href="${externalLinks.aboutUs}" target="_blank" rel="noopener noreferrer">Vollständige Seite der Hawks öffnen ↗</a>
+    <div class="note">Die Angaben wurden aus der aktuellen „Über uns“-Seite der Hochheim Hawks übernommen. Dort sind zusätzlich Coaches sowie Schiedsrichterinnen und Schiedsrichter aufgeführt.</div>`;
+  moduleBack.hidden = false;
+}
+
 function renderStandard(key, push = true) {
   const data = moduleData[key];
   if (push) historyStack.push({ type: "standard", key });
@@ -275,7 +346,7 @@ function renderGallery(push = true) {
     <div class="module-header"><span class="eyebrow">📸 Modul</span><h2>Galerie / Momente</h2><p>Erinnerungen, Erfolge und besondere Hawks-Momente.</p></div>
     <div class="subgrid">
       <button class="subcard orange"><span class="subcard-icon">🎞️</span><strong>Bilder & Videos</strong></button>
-      <button class="subcard" data-gallery-action="legends"><span class="subcard-icon">🌟</span><strong>Legends / Wall of Fame</strong></button>
+      <button class="subcard" data-gallery-action="legends"><span class="subcard-icon">🌟</span><strong>Hawks arround the World</strong></button>
       <button class="subcard"><span class="subcard-icon">🏆</span><strong>Erfolge / Pokale</strong></button>
     </div>`;
   moduleBack.hidden = historyStack.length <= 1;
@@ -286,7 +357,7 @@ function renderGallery(push = true) {
 function renderLegends(push = true) {
   if (push) historyStack.push({ type: "legends" });
   moduleContent.innerHTML = `
-    <div class="module-header"><span class="eyebrow">🌟 Galerie</span><h2>Legends / Wall of Fame</h2><p>Ausgewählte Hawks-Spieler und ihre Profile.</p></div>
+    <div class="module-header"><span class="eyebrow">🌟 Galerie</span><h2>Hawks arround the World</h2><p>Ausgewählte Hawks-Spieler und ihre Profile.</p></div>
     <div class="item-list">${externalLinks.legends.map(legend => `
       <a class="item-row" href="${legend.url}" target="_blank" rel="noopener noreferrer">
         <span>🏀</span><div><strong>${legend.title}</strong><div class="muted">${legend.detail || "Profil öffnen"}</div></div>
@@ -322,10 +393,11 @@ function renderTeamCategory(category, push = true) {
     moduleContent.innerHTML = `
       <div class="module-header"><span class="eyebrow">🏀 Teams</span><h2>Jugend-Mannschaften</h2><p>Die Jugendteams können hier nach Altersklassen ergänzt werden.</p></div>
       <div class="subgrid">
-        ${["U18", "U16", "U14", "U12", "U10"].map((team, index) => `<button class="subcard ${index % 2 === 0 ? "orange" : ""}"><span class="subcard-icon">👥</span><strong>${team}</strong></button>`).join("")}
+        ${["U18", "U16", "U14", "U12", "U10"].map((team, index) => `<button class="subcard ${index % 2 === 0 ? "orange" : ""}" ${team === "U16" ? 'data-youth-team="u16"' : ''}><span class="subcard-icon">👥</span><strong>${team}</strong></button>`).join("")}
       </div>
-      <div class="note">Die Kacheln sind als Platzhalter vorbereitet und können später mit den konkreten Hawks-Jugendmannschaften verknüpft werden.</div>`;
+      <div class="note">Die U16 enthält bereits Informationen zum Trainer. Weitere Jugendteams können später ergänzt werden.</div>`;
     moduleBack.hidden = false;
+    moduleContent.querySelectorAll("[data-youth-team]").forEach(btn => btn.addEventListener("click", () => renderYouthTeam(btn.dataset.youthTeam)));
     return;
   }
   moduleContent.innerHTML = `
@@ -336,6 +408,34 @@ function renderTeamCategory(category, push = true) {
     </div>`;
   moduleBack.hidden = false;
   moduleContent.querySelectorAll("[data-team]").forEach(btn => btn.addEventListener("click", () => renderTeamDetail(btn.dataset.team)));
+}
+
+function renderYouthTeam(teamKey, push = true) {
+  if (push) historyStack.push({ type: "youthTeam", teamKey });
+  if (teamKey !== "u16") return;
+  moduleContent.innerHTML = `
+    <div class="module-header"><span class="eyebrow">🏀 Jugend-Mannschaften</span><h2>U16</h2><p>Informationen zur Mannschaft und zum Trainer.</p></div>
+    <section class="trainer-profile" aria-labelledby="trainer-title">
+      <div class="trainer-heading-card"><span class="subcard-icon">📋</span><h3 id="trainer-title">Trainer</h3></div>
+      <img class="trainer-photo" src="assets/sebastian-basti-krause.png" alt="Sebastian Basti Krause mit einem Basketball in der Sporthalle" />
+      <div class="trainer-copy">
+        <h3>Sebastian „Basti“ Krause</h3>
+        <p>Basti Krause ist WU16-Coach, Jugendwart und sportlicher Leiter für den weiblichen Bereich der Hochheim Hawks. Basketball gehört für ihn seit seiner Kindheit zur Familie: Mit sieben Jahren begann er bei seinem Vater Frank und durchlief anschließend die Hochheimer Jugendmannschaften.</p>
+        <p>In der Saison 2008/09 spielte er in der U16-Oberliga des BC Wiesbaden und verbrachte danach ein Schuljahr an einer High School in Omaha, Nebraska. Nach seiner Rückkehr spielte er zwei Jahre für die SG Rheinhessen/ASC Mainz in der NBBL. Seit 2012 gehört er als Spieler zum ersten Herrenteam des ASC Theresianum in der Regionalliga.</p>
+        <p>Seine Trainerlaufbahn begann 2011 als Co-Trainer der MU10. Er begleitete das Team bis zur MU14-Hessenmeisterschaft und erreichte dort den dritten Platz. Später übernahm er die WU16, führte sie durch zwei Oberliga-Spielzeiten und anschließend in die WU18-Oberliga. Seit 2019 ist er lizenzierter C-Trainer Leistungssport.</p>
+        <p>Auch organisatorisch engagiert er sich seit vielen Jahren für die Hawks. 2020 übernahm er die sportliche Leitung des weiblichen Bereichs.</p>
+        <h4>Das sagen die Hawks über Basti</h4>
+        <blockquote>Sein Training ist nie langweilig – er hat immer neue Ideen.</blockquote>
+        <blockquote>Er achtet auf die individuellen Stärken und Schwächen und versucht, aus allen das Beste herauszuholen.</blockquote>
+        <blockquote>Er nimmt sich viel Zeit für seine Spielerinnen und Spieler und kann unterschiedliche Charaktere zu einem Team zusammenfügen.</blockquote>
+        <blockquote>Motiviert, entspannt und mit viel Spaß bei der Sache.</blockquote>
+        <h4>Das sagt Basti über die Hawks</h4>
+        <p><strong>Schönstes Erlebnis:</strong> Die Entwicklung seiner Teams über viele Oberliga-Jahre zu sehen.</p>
+        <p><strong>Was macht die Hawks besonders?</strong> Der Zusammenhalt und die Gemeinschaft.</p>
+        <p class="source-note">Quelle: Hochheim Hawks, „Die Hawks stellen vor – Sebastian (Basti) Krause“, 29.06.2021. Foto: privat.</p>
+      </div>
+    </section>`;
+  moduleBack.hidden = false;
 }
 
 function renderTeamDetail(teamKey, push = true) {
@@ -360,6 +460,7 @@ document.querySelectorAll("[data-module]").forEach(btn => {
     else if (key === "games") renderGames();
     else if (key === "partners") renderPartners();
     else if (key === "gallery") renderGallery();
+    else if (key === "about") renderAbout();
     else renderStandard(key);
     openModal("moduleModal");
   });
@@ -376,8 +477,11 @@ moduleBack.addEventListener("click", () => {
   if (previous.type === "partners") renderPartners(false);
   if (previous.type === "gallery") renderGallery(false);
   if (previous.type === "legends") renderLegends(false);
+  if (previous.type === "about") renderAbout(false);
+  if (previous.type === "aboutPeople") renderAboutPeople(false);
   if (previous.type === "teamCategory") renderTeamCategory(previous.category, false);
   if (previous.type === "teamDetail") renderTeamDetail(previous.teamKey, false);
+  if (previous.type === "youthTeam") renderYouthTeam(previous.teamKey, false);
   if (previous.type === "standard") renderStandard(previous.key, false);
 });
 

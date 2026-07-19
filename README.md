@@ -25,3 +25,19 @@ Die veröffentlichte App in Safari öffnen, auf **Teilen** tippen und **Zum Home
 ## Hinweis
 
 Formulare und Login sind derzeit Demo-Oberflächen ohne Backend. Für echte Konten, Speicherung oder E-Mail-Versand ist später ein sicherer Serverdienst bzw. Backend erforderlich.
+
+
+## Version 3.1
+- Neue Schaltfläche „Chat-Rooms“ neben „Anfrage“
+- Auswahl für Mannschaft A, Mannschaft B, Schiedsrichter und Trainer
+
+
+## Version 3.3
+- Kachel „Legends / Wall of Fame“ in „Hawks arround the World“ umbenannt.
+
+
+## Version 3.4
+
+- Unter „Über uns“ wurde die Kachel „Aufgaben und Personen“ mit den Inhalten der offiziellen Hawks-Seite ergänzt.
+- Darstellung von Abteilungsleitung, erweiterter Abteilungsleitung und weiteren Aufgaben.
+- Link zur vollständigen offiziellen Seite hinzugefügt.

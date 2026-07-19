@@ -1,4 +1,4 @@
-const CACHE_NAME = "henrik-test-hawks-v3-0";
+const CACHE_NAME = "henrik-test-hawks-v3-4";
 const APP_FILES = [
   "./",
   "./index.html",
@@ -8,6 +8,7 @@ const APP_FILES = [
   "./assets/newskachel.jpg",
   "./assets/teamskachel.jpg",
   "./assets/galeriekachel.jpg",
+  "./assets/sebastian-basti-krause.png",
   "./assets/icon-192.png",
   "./assets/icon-512.png"
 ];

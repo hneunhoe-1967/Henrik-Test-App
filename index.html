@@ -13,10 +13,16 @@
 <body>
   <div class="app-shell">
     <header class="topbar">
-      <button class="top-action" data-modal="requestModal" aria-label="Anfrage öffnen">
-        <span class="icon-circle">!</span>
-        <span>Anfrage</span>
-      </button>
+      <div class="top-actions-left">
+        <button class="top-action" data-modal="requestModal" aria-label="Anfrage öffnen">
+          <span class="icon-circle">!</span>
+          <span>Anfrage</span>
+        </button>
+        <button class="top-action" data-modal="chatRoomsModal" aria-label="Chat-Rooms öffnen">
+          <span class="icon-circle chat-icon">💬</span>
+          <span>Chat-Rooms</span>
+        </button>
+      </div>
 
       <div class="brand" role="banner">
         <div class="brand-mark">H</div>
@@ -87,6 +93,22 @@
       <button data-modal="privacyModal">🔒 <span>Datenschutz</span></button>
       <button data-modal="feedbackModal">💬 <span>Feedback</span></button>
     </footer>
+  </div>
+
+
+  <div class="modal" id="chatRoomsModal" aria-hidden="true">
+    <div class="modal-panel">
+      <button class="close-modal" aria-label="Schließen">×</button>
+      <h2>Chat-Rooms</h2>
+      <p>Wähle den gewünschten Chat-Room:</p>
+      <div class="subgrid chat-room-grid">
+        <button class="subcard orange" data-chat-room="Mannschaft A"><span class="subcard-icon">🏀</span><strong>Chat-Room Mannschaft A</strong></button>
+        <button class="subcard" data-chat-room="Mannschaft B"><span class="subcard-icon">🏀</span><strong>Chat-Room Mannschaft B</strong></button>
+        <button class="subcard" data-chat-room="Schiedsrichter"><span class="subcard-icon">🦓</span><strong>Chat-Room Schiedsrichter</strong></button>
+        <button class="subcard orange" data-chat-room="Trainer"><span class="subcard-icon">📋</span><strong>Chat-Room Trainer</strong></button>
+      </div>
+      <div class="note">Die Chat-Räume sind als auswählbare Bereiche vorbereitet. Für echte Nachrichten, Benutzerkonten und Speicherung ist später eine Server- oder Datenbankanbindung erforderlich.</div>
+    </div>
   </div>
 
   <div class="modal" id="userModal" aria-hidden="true">
