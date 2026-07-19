@@ -1,4 +1,4 @@
-# Henrik-Test-Hawks – Version 3.0
+# Henrik-Test-Hawks – Version 3.5
 
 GitHub-Pages-fertige Progressive Web App (PWA) für die TG Hochheim Hawks.
 
@@ -41,3 +41,8 @@ Formulare und Login sind derzeit Demo-Oberflächen ohne Backend. Für echte Kont
 - Unter „Über uns“ wurde die Kachel „Aufgaben und Personen“ mit den Inhalten der offiziellen Hawks-Seite ergänzt.
 - Darstellung von Abteilungsleitung, erweiterter Abteilungsleitung und weiteren Aufgaben.
 - Link zur vollständigen offiziellen Seite hinzugefügt.
+
+
+## Version 3.5
+- Unter „Über uns → Aufgaben und Personen“ öffnet Punkt 2 „Sebastian Krause“ ein Porträt mit Bild und Link zum vollständigen Hawks-Artikel.
+- Cache-Version auf 3.5 aktualisiert.

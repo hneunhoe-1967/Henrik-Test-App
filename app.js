@@ -262,7 +262,7 @@ function renderAboutPeople(push = true) {
     <h3>Gewählte Abteilungsleitung</h3>
     <div class="item-list">
       <div class="item-row"><span>1</span><div><strong>Stefan Lehr</strong><div class="muted">Abteilungsleiter</div></div></div>
-      <div class="item-row"><span>2</span><div><strong>Sebastian Krause</strong><div class="muted">Stellvertretender Abteilungsleiter und sportliche Leitung weiblicher Bereich</div></div></div>
+      <button class="item-row item-row-button" type="button" data-about-person="sebastian-krause"><span>2</span><div><strong>Sebastian Krause</strong><div class="muted">Stellvertretender Abteilungsleiter und sportliche Leitung weiblicher Bereich</div><div class="item-link-hint">Porträt öffnen →</div></div></button>
       <div class="item-row"><span>3</span><div><strong>Benjamin Kammerbauer</strong><div class="muted">Kassenwart und 2. stellvertretende Abteilungsleitung</div></div></div>
       <div class="item-row"><span>4</span><div><strong>Nico Doesseler</strong><div class="muted">Jugendwart</div></div></div>
     </div>
@@ -291,6 +291,33 @@ function renderAboutPeople(push = true) {
 
     <a class="primary-btn inline-link" href="${externalLinks.aboutUs}" target="_blank" rel="noopener noreferrer">Vollständige Seite der Hawks öffnen ↗</a>
     <div class="note">Die Angaben wurden aus der aktuellen „Über uns“-Seite der Hochheim Hawks übernommen. Dort sind zusätzlich Coaches sowie Schiedsrichterinnen und Schiedsrichter aufgeführt.</div>`;
+  moduleBack.hidden = false;
+  const sebastianButton = moduleContent.querySelector('[data-about-person="sebastian-krause"]');
+  if (sebastianButton) sebastianButton.addEventListener("click", () => renderAboutPerson("sebastian-krause"));
+}
+
+function renderAboutPerson(personKey, push = true) {
+  if (personKey !== "sebastian-krause") return;
+  if (push) historyStack.push({ type: "aboutPerson", personKey });
+  moduleContent.innerHTML = `
+    <div class="module-header"><span class="eyebrow">👥 Aufgaben und Personen</span><h2>Sebastian „Basti“ Krause</h2><p>Stellvertretender Abteilungsleiter und sportliche Leitung des weiblichen Bereichs.</p></div>
+    <section class="trainer-profile" aria-labelledby="about-sebastian-title">
+      <div class="trainer-heading-card"><span class="subcard-icon">👤</span><h3 id="about-sebastian-title">Porträt</h3></div>
+      <img class="trainer-photo" src="assets/sebastian-krause-person.jpeg" alt="Sebastian Basti Krause mit einem Basketball in der Sporthalle" />
+      <div class="trainer-copy">
+        <h3>Sebastian „Basti“ Krause</h3>
+        <p>Basti Krause ist stellvertretender Abteilungsleiter der Hochheim Hawks und verantwortlich für die sportliche Leitung des weiblichen Bereichs. Basketball begleitet ihn seit seiner Kindheit: Mit sieben Jahren begann er bei seinem Vater Frank und durchlief anschließend die Hochheimer Jugendmannschaften.</p>
+        <p>In der Saison 2008/09 spielte er in der U16-Oberliga des BC Wiesbaden und verbrachte danach ein Schuljahr an einer High School in Omaha, Nebraska. Nach seiner Rückkehr spielte er zwei Jahre für die SG Rheinhessen/ASC Mainz in der NBBL. Seit 2012 gehört er als Spieler zum ersten Herrenteam des ASC Theresianum in der Regionalliga.</p>
+        <p>Seine Trainerlaufbahn begann 2011 als Co-Trainer der MU10. Später übernahm er die WU16 und führte sie über zwei Oberliga-Spielzeiten in die WU18-Oberliga. Seit 2019 ist er lizenzierter C-Trainer Leistungssport. Im Jahr 2020 übernahm er zusätzlich die sportliche Leitung des weiblichen Bereichs.</p>
+        <h4>Was die Hawks an ihm schätzen</h4>
+        <blockquote>Sein Training ist abwechslungsreich, individuell und von neuen Ideen geprägt.</blockquote>
+        <blockquote>Er nimmt sich Zeit für seine Spielerinnen und Spieler und verbindet unterschiedliche Charaktere zu einem Team.</blockquote>
+        <h4>Sein Blick auf die Hawks</h4>
+        <p>Als besonders wichtig nennt Basti den Zusammenhalt und die Gemeinschaft im Verein. Zu seinen schönsten Erlebnissen zählt die Entwicklung seiner Teams über viele Oberliga-Jahre.</p>
+        <a class="primary-btn inline-link" href="https://hochheim-hawks.de/news-ansicht/die-hawks-stellen-vor-sebastian-basti-krause.html" target="_blank" rel="noopener noreferrer">Vollständiges Porträt auf der Hawks-Webseite öffnen ↗</a>
+        <p class="source-note">Quelle: Hochheim Hawks, „Die Hawks stellen vor – Sebastian (Basti) Krause“, 29.06.2021. Foto: privat.</p>
+      </div>
+    </section>`;
   moduleBack.hidden = false;
 }
 
@@ -479,6 +506,7 @@ moduleBack.addEventListener("click", () => {
   if (previous.type === "legends") renderLegends(false);
   if (previous.type === "about") renderAbout(false);
   if (previous.type === "aboutPeople") renderAboutPeople(false);
+  if (previous.type === "aboutPerson") renderAboutPerson(previous.personKey, false);
   if (previous.type === "teamCategory") renderTeamCategory(previous.category, false);
   if (previous.type === "teamDetail") renderTeamDetail(previous.teamKey, false);
   if (previous.type === "youthTeam") renderYouthTeam(previous.teamKey, false);

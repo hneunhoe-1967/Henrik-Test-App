@@ -9,6 +9,7 @@ const APP_FILES = [
   "./assets/teamskachel.jpg",
   "./assets/galeriekachel.jpg",
   "./assets/sebastian-basti-krause.png",
+  "./assets/sebastian-krause-person.jpeg",
   "./assets/icon-192.png",
   "./assets/icon-512.png"
 ];
