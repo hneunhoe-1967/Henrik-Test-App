@@ -210,3 +210,14 @@ a { color:#b64f00; }
   outline: none;
 }
 .item-link-hint { margin-top: 6px; color: #b95000; font-weight: 800; font-size: .9rem; }
+
+/* Benutzer- und Rollen-Konzept – Test-Prototyp */
+[hidden] { display: none !important; }
+.login-error { margin: 0; padding: 11px 13px; border-radius: 10px; background: #ffe1dc; color: #9b1c0f; font-weight: 800; }
+.demo-credentials { display: grid; gap: 5px; margin-top: 18px; padding: 15px; border-radius: 14px; background: #f3f3f3; font-size: .9rem; }
+.demo-credentials strong { color: #a54800; }
+.account-summary { display: flex; align-items: center; gap: 15px; margin: 20px 0; padding: 18px; border-radius: 16px; background: #f3f3f3; border-left: 5px solid var(--orange); }
+.account-summary strong, .account-summary small { display: block; }
+.account-summary small { margin-top: 4px; color: #666; }
+.account-avatar { display: grid; place-items: center; width: 48px; height: 48px; border-radius: 50%; background: var(--orange); font-size: 1.35rem; }
+.full-width { width: 100%; }

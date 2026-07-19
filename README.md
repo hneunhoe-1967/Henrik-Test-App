@@ -1,4 +1,4 @@
-# Henrik-Test-Hawks – Version 3.5
+# Henrik-Test-Hawks – Version 3.6
 
 GitHub-Pages-fertige Progressive Web App (PWA) für die TG Hochheim Hawks.
 
@@ -43,6 +43,17 @@ Formulare und Login sind derzeit Demo-Oberflächen ohne Backend. Für echte Kont
 - Link zur vollständigen offiziellen Seite hinzugefügt.
 
 
-## Version 3.5
+## Version 3.6
 - Unter „Über uns → Aufgaben und Personen“ öffnet Punkt 2 „Sebastian Krause“ ein Porträt mit Bild und Link zum vollständigen Hawks-Artikel.
 - Cache-Version auf 3.5 aktualisiert.
+
+
+## Version 3.6 – Benutzer- und Rollen-Prototyp
+
+- Startrolle: Gast
+- Admin sieht alle Module und Chat-Rooms
+- Spieler A sieht keine Digitale Abteilung und nur Chat-Room Mannschaft A
+- Gast sieht weder Digitale Abteilung noch Chat-Rooms
+- Test-Login mit lokal gespeicherter Sitzung und Abmeldefunktion
+
+Testzugänge: `Admin` / `Admin01` und `Spieler A` / `Spieler01`. Diese Zugangskontrolle ist ausschließlich für fachliche Demonstrationszwecke vorgesehen.

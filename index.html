@@ -8,7 +8,7 @@
   <title>Henrik-Test-Hawks</title>
   <link rel="manifest" href="manifest.webmanifest" />
   <link rel="apple-touch-icon" href="assets/icon-192.png" />
-  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="styles.css?v=36" />
 </head>
 <body>
   <div class="app-shell">
@@ -18,7 +18,7 @@
           <span class="icon-circle">!</span>
           <span>Anfrage</span>
         </button>
-        <button class="top-action" data-modal="chatRoomsModal" aria-label="Chat-Rooms öffnen">
+        <button class="top-action" id="chatRoomsButton" data-modal="chatRoomsModal" aria-label="Chat-Rooms öffnen">
           <span class="icon-circle chat-icon">💬</span>
           <span>Chat-Rooms</span>
         </button>
@@ -35,8 +35,8 @@
       <div class="top-actions-right">
         <button class="install-btn" id="installApp" hidden>App installieren</button>
         <button class="top-action user-action" data-modal="userModal" aria-label="Benutzermenü öffnen">
-        <span class="user-icon">👤</span>
-        <span>Benutzer</span>
+          <span class="user-icon">👤</span>
+          <span id="userDisplayName">Gast</span>
         </button>
       </div>
     </header>
@@ -72,7 +72,7 @@
           <span class="card-icon">🧰</span>
           <span class="card-copy"><strong>Service</strong><small>Hallen, Downloads, Anträge</small></span>
         </button>
-        <button class="module-card" data-module="digital">
+        <button class="module-card" id="digitalModuleCard" data-module="digital">
           <span class="card-icon">💻</span>
           <span class="card-copy"><strong>Digitale Abteilung</strong><small>Abrechnung & Leitung</small></span>
         </button>
@@ -114,12 +114,34 @@
   <div class="modal" id="userModal" aria-hidden="true">
     <div class="modal-panel compact">
       <button class="close-modal" aria-label="Schließen">×</button>
-      <h2>Benutzer</h2>
-      <p>Wähle eine Option:</p>
-      <div class="action-stack">
-        <button class="primary-btn">Log-in</button>
-        <button class="secondary-btn">Neu? Hier registrieren</button>
+      <div id="loginView">
+        <h2>Log-in</h2>
+        <p>Mit einem Testbenutzer anmelden, um die Rollen und Berechtigungen zu prüfen.</p>
+        <form class="app-form" id="loginForm">
+          <label>Benutzername
+            <input id="loginName" name="username" type="text" autocomplete="username" required />
+          </label>
+          <label>Passwort
+            <input id="loginPassword" name="password" type="password" autocomplete="current-password" required />
+          </label>
+          <p class="login-error" id="loginError" role="alert" hidden>Benutzername oder Passwort ist nicht korrekt.</p>
+          <button class="primary-btn" type="submit">Anmelden</button>
+        </form>
+        <div class="demo-credentials">
+          <strong>Testzugänge</strong>
+          <span>Admin / Admin01</span>
+          <span>Spieler A / Spieler01</span>
+        </div>
       </div>
+      <div id="accountView" hidden>
+        <h2>Benutzerkonto</h2>
+        <div class="account-summary">
+          <span class="account-avatar">👤</span>
+          <div><strong id="accountName">Gast</strong><small id="accountRole">Rolle: Gast</small></div>
+        </div>
+        <button class="secondary-btn full-width" id="logoutButton" type="button">Abmelden</button>
+      </div>
+      <div class="note">Test-Prototyp: Zugangsdaten und Rollenprüfung laufen ausschließlich im Browser und stellen keine sichere Zugriffskontrolle dar.</div>
     </div>
   </div>
 
@@ -209,7 +231,7 @@
   </div>
 
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
-  <script src="app.js"></script>
+  <script src="app.js?v=36"></script>
   <script>
     if ("serviceWorker" in navigator) {
       window.addEventListener("load", () => navigator.serviceWorker.register("./service-worker.js"));

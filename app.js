@@ -1,3 +1,71 @@
+const DEMO_USERS = {
+  "Admin": { password: "Admin01", role: "admin", displayName: "Admin", roleLabel: "Admin" },
+  "Spieler A": { password: "Spieler01", role: "teamA", displayName: "Spieler A", roleLabel: "Mannschaft A" }
+};
+
+const ROLE_GUEST = { role: "guest", displayName: "Gast", roleLabel: "Gast" };
+let currentUser = ROLE_GUEST;
+
+function loadSession() {
+  try {
+    const savedName = localStorage.getItem("hawksDemoUser");
+    currentUser = savedName && DEMO_USERS[savedName]
+      ? { ...DEMO_USERS[savedName], username: savedName }
+      : ROLE_GUEST;
+  } catch (error) {
+    currentUser = ROLE_GUEST;
+  }
+}
+
+function saveSession(username) {
+  try {
+    if (username) localStorage.setItem("hawksDemoUser", username);
+    else localStorage.removeItem("hawksDemoUser");
+  } catch (error) {
+    // Die Demo funktioniert auch ohne verfügbaren Browser-Speicher.
+  }
+}
+
+function isAdmin() { return currentUser.role === "admin"; }
+function isTeamA() { return currentUser.role === "teamA"; }
+function canUseChatRooms() { return isAdmin() || isTeamA(); }
+function canUseDigitalModule() { return isAdmin(); }
+
+function applyRolePermissions() {
+  const chatButton = document.getElementById("chatRoomsButton");
+  const digitalCard = document.getElementById("digitalModuleCard");
+  const userDisplayName = document.getElementById("userDisplayName");
+
+  if (chatButton) chatButton.hidden = !canUseChatRooms();
+  if (digitalCard) digitalCard.hidden = !canUseDigitalModule();
+  if (userDisplayName) userDisplayName.textContent = currentUser.displayName;
+
+  document.querySelectorAll("[data-chat-room]").forEach(button => {
+    const allowed = isAdmin() || (isTeamA() && button.dataset.chatRoom === "Mannschaft A");
+    button.hidden = !allowed;
+  });
+
+  const openChat = document.getElementById("chatRoomsModal");
+  if (openChat?.classList.contains("open") && !canUseChatRooms()) closeModal(openChat);
+  const openModule = document.getElementById("moduleModal");
+  if (openModule?.classList.contains("open") && !canUseDigitalModule() && historyStack.some(entry => entry.key === "digital")) {
+    closeModal(openModule);
+  }
+  updateUserModal();
+}
+
+function updateUserModal() {
+  const loginView = document.getElementById("loginView");
+  const accountView = document.getElementById("accountView");
+  const accountName = document.getElementById("accountName");
+  const accountRole = document.getElementById("accountRole");
+  const loggedIn = currentUser.role !== "guest";
+  if (loginView) loginView.hidden = loggedIn;
+  if (accountView) accountView.hidden = !loggedIn;
+  if (accountName) accountName.textContent = currentUser.displayName;
+  if (accountRole) accountRole.textContent = `Rolle: ${currentUser.roleLabel}`;
+}
+
 const moduleData = {
   news: {
     title: "News",
@@ -160,11 +228,23 @@ function closeModal(modal) {
 }
 
 document.querySelectorAll("[data-modal]").forEach(btn => {
-  btn.addEventListener("click", () => openModal(btn.dataset.modal));
+  btn.addEventListener("click", () => {
+    if (btn.dataset.modal === "chatRoomsModal" && !canUseChatRooms()) {
+      showToast("Dieser Bereich ist für die Rolle Gast nicht verfügbar.");
+      return;
+    }
+    if (btn.dataset.modal === "userModal") updateUserModal();
+    openModal(btn.dataset.modal);
+  });
 });
 
 document.querySelectorAll("[data-chat-room]").forEach(btn => {
   btn.addEventListener("click", () => {
+    const allowed = isAdmin() || (isTeamA() && btn.dataset.chatRoom === "Mannschaft A");
+    if (!allowed) {
+      showToast("Für diesen Chat-Room besitzt deine Rolle keine Berechtigung.");
+      return;
+    }
     showToast(`Chat-Room ${btn.dataset.chatRoom} ausgewählt. Die Live-Chat-Funktion kann später angebunden werden.`);
   });
 });
@@ -482,6 +562,10 @@ document.querySelectorAll("[data-module]").forEach(btn => {
   btn.addEventListener("click", () => {
     historyStack = [];
     const key = btn.dataset.module;
+    if (key === "digital" && !canUseDigitalModule()) {
+      showToast("Die Digitale Abteilung ist nur für die Rolle Admin freigeschaltet.");
+      return;
+    }
     if (key === "teams") renderTeams();
     else if (key === "news") renderNews();
     else if (key === "games") renderGames();
@@ -529,6 +613,45 @@ function showToast(message) {
   setTimeout(() => toast.classList.remove("show"), 3000);
 }
 
+
+const loginForm = document.getElementById("loginForm");
+const logoutButton = document.getElementById("logoutButton");
+
+if (loginForm) {
+  loginForm.addEventListener("submit", event => {
+    event.preventDefault();
+    const username = document.getElementById("loginName").value.trim();
+    const password = document.getElementById("loginPassword").value;
+    const loginError = document.getElementById("loginError");
+    const user = DEMO_USERS[username];
+
+    if (!user || user.password !== password) {
+      if (loginError) loginError.hidden = false;
+      return;
+    }
+
+    if (loginError) loginError.hidden = true;
+    currentUser = { ...user, username };
+    saveSession(username);
+    applyRolePermissions();
+    loginForm.reset();
+    closeModal(document.getElementById("userModal"));
+    showToast(`Angemeldet als ${currentUser.displayName} – Rolle ${currentUser.roleLabel}.`);
+  });
+}
+
+if (logoutButton) {
+  logoutButton.addEventListener("click", () => {
+    currentUser = ROLE_GUEST;
+    saveSession(null);
+    applyRolePermissions();
+    closeModal(document.getElementById("userModal"));
+    showToast("Abgemeldet. Die App wird wieder mit der Rolle Gast verwendet.");
+  });
+}
+
+loadSession();
+applyRolePermissions();
 
 // PWA-Installation: Browser zeigen den Button nur, wenn die App installierbar ist.
 let deferredInstallPrompt;
