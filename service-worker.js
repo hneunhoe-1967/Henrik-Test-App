@@ -1,4 +1,4 @@
-const CACHE_NAME = "henrik-test-hawks-v3-6";
+const CACHE_NAME = "henrik-test-hawks-v5-wochenendzeiten-1";
 const APP_FILES = [
   "./",
   "./index.html",

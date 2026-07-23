@@ -28,6 +28,8 @@ function saveSession(username) {
 
 function isAdmin() { return currentUser.role === "admin"; }
 function isTeamA() { return currentUser.role === "teamA"; }
+function isPlayer() { return isTeamA(); }
+function canUseWeekendHallTimes() { return isAdmin() || isPlayer(); }
 function canUseChatRooms() { return isAdmin() || isTeamA(); }
 function canUseDigitalModule() { return isAdmin(); }
 
@@ -106,6 +108,8 @@ const moduleData = {
     icon: "🧰",
     items: [
       ["📍", "Adressen und Hallen"],
+      ["🕒", "Trainingszeiten"],
+      ["🏟️", "Hallenzeiten am WE"],
       ["⬇️", "Download-Bereich"],
       ["🔐", "Rechte- und Rollenstruktur"],
       ["📝", "Mitgliedsantrag online"],
@@ -401,6 +405,246 @@ function renderAboutPerson(personKey, push = true) {
   moduleBack.hidden = false;
 }
 
+const TRAINING_STORAGE_KEY = "hawksTrainingTimesV1";
+const trainingDays = ["Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag"];
+const trainingHalls = ["MTK-Halle", "GH-Halle"];
+const trainingTimes = ["8.00–13.59", "14:00", "14:30", "15:00", "15:30", "16:00", "16:30", "17:00", "17:30", "18:00", "18:30", "19:00", "19:30", "20:00", "20:30", "21:00", "21:30", "22:00"];
+
+function emptyTrainingSchedule() {
+  return trainingTimes.map(() => Array(trainingDays.length * trainingHalls.length).fill(""));
+}
+
+function loadTrainingSchedule() {
+  try {
+    const stored = JSON.parse(localStorage.getItem(TRAINING_STORAGE_KEY));
+    if (Array.isArray(stored) && stored.length === trainingTimes.length) return stored;
+  } catch (error) {
+    // Bei ungültigen oder nicht verfügbaren Browserdaten wird die leere Excel-Vorlage genutzt.
+  }
+  return emptyTrainingSchedule();
+}
+
+function saveTrainingSchedule(schedule) {
+  try {
+    localStorage.setItem(TRAINING_STORAGE_KEY, JSON.stringify(schedule));
+    return true;
+  } catch (error) {
+    return false;
+  }
+}
+
+const WEEKEND_STORAGE_KEY = "hawksWeekendHallTimesV1";
+const WEEKEND_REQUESTS_KEY = "hawksWeekendHallRequestsV1";
+const weekendDates = [
+  "25.07.2026", "26.07.2026", "01.08.2026", "02.08.2026",
+  "08.08.2026", "09.08.2026", "25.08.2026", "16.08.2026",
+  "23.08.2026", "23.08.2026", "29.08.2026", "30.08.2026"
+];
+const weekendTimes = Array.from({ length: 30 }, (_, index) => {
+  const totalMinutes = 8 * 60 + index * 30;
+  const hours = String(Math.floor(totalMinutes / 60)).padStart(2, "0");
+  const minutes = String(totalMinutes % 60).padStart(2, "0");
+  return `${hours}:${minutes}`;
+});
+
+function emptyWeekendSchedule() {
+  return weekendDates.map(() => Array(weekendTimes.length).fill(""));
+}
+
+function loadWeekendSchedule() {
+  try {
+    const stored = JSON.parse(localStorage.getItem(WEEKEND_STORAGE_KEY));
+    if (Array.isArray(stored) && stored.length === weekendDates.length) return stored;
+  } catch (error) {
+    // Ungültige Browserdaten werden ignoriert.
+  }
+  return emptyWeekendSchedule();
+}
+
+function saveWeekendSchedule(schedule) {
+  try {
+    localStorage.setItem(WEEKEND_STORAGE_KEY, JSON.stringify(schedule));
+    return true;
+  } catch (error) {
+    return false;
+  }
+}
+
+function loadWeekendRequests() {
+  try {
+    const stored = JSON.parse(localStorage.getItem(WEEKEND_REQUESTS_KEY));
+    return Array.isArray(stored) ? stored : [];
+  } catch (error) {
+    return [];
+  }
+}
+
+function saveWeekendRequests(requests) {
+  try {
+    localStorage.setItem(WEEKEND_REQUESTS_KEY, JSON.stringify(requests));
+    return true;
+  } catch (error) {
+    return false;
+  }
+}
+
+function escapeHtml(value) {
+  return String(value ?? "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+}
+
+function renderService(push = true) {
+  if (push) historyStack.push({ type: "service" });
+  const data = moduleData.service;
+  const weekendCard = canUseWeekendHallTimes()
+    ? '<button class="subcard" data-service-action="weekend"><span class="subcard-icon">🏟️</span><strong>Hallenzeiten am WE</strong></button>'
+    : '';
+  moduleContent.innerHTML = `
+    <div class="module-header"><span class="eyebrow">${data.icon} Modul</span><h2>${data.title}</h2><p>${data.subtitle}</p></div>
+    <div class="subgrid">
+      <button class="subcard orange"><span class="subcard-icon">📍</span><strong>Adressen und Hallen</strong></button>
+      <button class="subcard" data-service-action="training"><span class="subcard-icon">🕒</span><strong>Trainingszeiten</strong></button>
+      ${weekendCard}
+      <button class="subcard orange"><span class="subcard-icon">⬇️</span><strong>Download-Bereich</strong></button>
+      <button class="subcard"><span class="subcard-icon">🔐</span><strong>Rechte- und Rollenstruktur</strong></button>
+      <button class="subcard orange"><span class="subcard-icon">📝</span><strong>Mitgliedsantrag online</strong></button>
+      <button class="subcard"><span class="subcard-icon">🔗</span><strong>Verbindung mit DSS</strong></button>
+      <button class="subcard orange"><span class="subcard-icon">💬</span><strong>Feedback</strong></button>
+    </div>
+    <div class="note">Trainingszeiten sind für alle Rollen sichtbar. Die Wochenend-Hallenzeiten sehen nur Spieler und Admin; bearbeiten darf sie ausschließlich der Admin.</div>`;
+  moduleBack.hidden = historyStack.length <= 1;
+  moduleContent.querySelector('[data-service-action="training"]')?.addEventListener("click", () => renderTrainingTimes());
+  moduleContent.querySelector('[data-service-action="weekend"]')?.addEventListener("click", () => renderWeekendHallTimes());
+}
+
+function renderTrainingTimes(push = true) {
+  if (push) historyStack.push({ type: "trainingTimes" });
+  const schedule = loadTrainingSchedule();
+  const editable = isAdmin();
+  moduleContent.innerHTML = `
+    <div class="module-header"><span class="eyebrow">🕒 Service</span><h2>Trainingszeiten</h2><p>Wochenübersicht nach Halle und Uhrzeit.</p></div>
+    <div class="training-toolbar">
+      <span class="role-badge ${editable ? "admin" : "readonly"}">${editable ? "Admin: Bearbeitung freigeschaltet" : "Nur-Lese-Ansicht"}</span>
+      ${editable ? '<button type="button" class="primary-btn" id="saveTrainingTimes">Änderungen speichern</button>' : ''}
+    </div>
+    <div class="training-table-wrap">
+      <table class="training-table">
+        <thead>
+          <tr><th rowspan="2" class="time-heading">Uhrzeit</th>${trainingDays.map(day => `<th colspan="2">${day}</th>`).join("")}</tr>
+          <tr>${trainingDays.map(() => trainingHalls.map(hall => `<th>${hall}</th>`).join("")).join("")}</tr>
+        </thead>
+        <tbody>
+          ${trainingTimes.map((time, rowIndex) => `<tr>
+            <th scope="row">${time}</th>
+            ${schedule[rowIndex].map((value, colIndex) => `<td data-row="${rowIndex}" data-col="${colIndex}" ${editable ? 'contenteditable="true" spellcheck="false"' : ''}>${String(value || "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")}</td>`).join("")}
+          </tr>`).join("")}
+        </tbody>
+      </table>
+    </div>
+    <div class="note">Grundlage ist die bereitgestellte Excel-Vorlage. Im Test-Prototyp werden Admin-Änderungen nur lokal im jeweiligen Browser gespeichert.</div>`;
+  moduleBack.hidden = false;
+
+  const saveButton = moduleContent.querySelector("#saveTrainingTimes");
+  if (saveButton) saveButton.addEventListener("click", () => {
+    const updated = emptyTrainingSchedule();
+    moduleContent.querySelectorAll(".training-table td[data-row]").forEach(cell => {
+      updated[Number(cell.dataset.row)][Number(cell.dataset.col)] = cell.textContent.trim();
+    });
+    showToast(saveTrainingSchedule(updated) ? "Trainingszeiten wurden lokal gespeichert." : "Speichern ist in diesem Browser nicht möglich.");
+  });
+}
+
+
+function renderWeekendHallTimes(push = true) {
+  if (!canUseWeekendHallTimes()) {
+    showToast("Die Wochenend-Hallenzeiten sind nur für Spieler und Admin sichtbar.");
+    return;
+  }
+  if (push) historyStack.push({ type: "weekendHallTimes" });
+  const schedule = loadWeekendSchedule();
+  const editable = isAdmin();
+  const requests = loadWeekendRequests();
+  moduleContent.innerHTML = `
+    <div class="module-header"><span class="eyebrow">🏟️ Service</span><h2>Hallenzeiten am WE</h2><p>Wochenendübersicht von 08:00 bis 22:30 Uhr gemäß der bereitgestellten Excel-Vorlage.</p></div>
+    <div class="training-toolbar">
+      <span class="role-badge ${editable ? "admin" : "readonly"}">${editable ? "Admin: Bearbeitung freigeschaltet" : "Spieler: Nur-Lese-Ansicht"}</span>
+      ${editable ? '<button type="button" class="primary-btn" id="saveWeekendTimes">Änderungen speichern</button>' : ''}
+    </div>
+    <div class="weekend-table-wrap">
+      <table class="weekend-table">
+        <thead><tr><th class="weekend-date-heading">Datum</th>${weekendTimes.map(time => `<th>${time}</th>`).join("")}</tr></thead>
+        <tbody>${weekendDates.map((date, rowIndex) => `<tr>
+          <th scope="row">${date}</th>
+          ${schedule[rowIndex].map((value, colIndex) => `<td data-row="${rowIndex}" data-col="${colIndex}" ${editable ? 'contenteditable="true" spellcheck="false"' : ''}>${escapeHtml(value)}</td>`).join("")}
+        </tr>`).join("")}</tbody>
+      </table>
+    </div>
+    ${isPlayer() ? `
+      <section class="request-panel">
+        <h3>Zeitanfrage stellen</h3>
+        <p>Wähle Datum und Zeitraum aus. Die Anfrage wird in diesem Test-Prototyp lokal für den Admin gespeichert.</p>
+        <form id="weekendRequestForm" class="app-form request-grid">
+          <label>Datum<select id="requestDate" required>${weekendDates.map((date, index) => `<option value="${index}">${date}</option>`).join("")}</select></label>
+          <label>Von<select id="requestFrom" required>${weekendTimes.map(time => `<option>${time}</option>`).join("")}</select></label>
+          <label>Bis<select id="requestTo" required>${weekendTimes.map(time => `<option>${time}</option>`).join("")}</select></label>
+          <label class="request-wide">Mannschaft / Zweck<input id="requestPurpose" maxlength="100" required placeholder="z. B. Mannschaft A – Zusatztraining"></label>
+          <label class="request-wide">Nachricht<textarea id="requestMessage" rows="3" maxlength="300" placeholder="Optionale Hinweise"></textarea></label>
+          <button class="primary-btn request-wide" type="submit">Anfrage absenden</button>
+        </form>
+      </section>` : ''}
+    ${editable ? `
+      <section class="request-panel">
+        <h3>Offene Zeitanfragen</h3>
+        <div class="request-list">${requests.length ? requests.map((request, index) => `
+          <article class="request-item">
+            <div><strong>${escapeHtml(request.date)} · ${escapeHtml(request.from)}–${escapeHtml(request.to)}</strong><small>${escapeHtml(request.user)} · ${escapeHtml(request.purpose)}</small>${request.message ? `<p>${escapeHtml(request.message)}</p>` : ''}</div>
+            <button class="secondary-btn" type="button" data-delete-request="${index}">Erledigt</button>
+          </article>`).join("") : '<p class="muted-copy">Derzeit liegen keine Anfragen vor.</p>'}</div>
+      </section>` : ''}
+    <div class="note">Die Daten und Anfragen werden im Test-Prototyp nur lokal im verwendeten Browser gespeichert. Für eine geräteübergreifende Nutzung ist später ein Backend erforderlich.</div>`;
+  moduleBack.hidden = false;
+
+  moduleContent.querySelector("#saveWeekendTimes")?.addEventListener("click", () => {
+    const updated = emptyWeekendSchedule();
+    moduleContent.querySelectorAll(".weekend-table td[data-row]").forEach(cell => {
+      updated[Number(cell.dataset.row)][Number(cell.dataset.col)] = cell.textContent.trim();
+    });
+    showToast(saveWeekendSchedule(updated) ? "Wochenend-Hallenzeiten wurden lokal gespeichert." : "Speichern ist in diesem Browser nicht möglich.");
+  });
+
+  moduleContent.querySelector("#weekendRequestForm")?.addEventListener("submit", event => {
+    event.preventDefault();
+    const dateIndex = Number(moduleContent.querySelector("#requestDate").value);
+    const from = moduleContent.querySelector("#requestFrom").value;
+    const to = moduleContent.querySelector("#requestTo").value;
+    if (weekendTimes.indexOf(to) <= weekendTimes.indexOf(from)) {
+      showToast("Die Endzeit muss nach der Startzeit liegen.");
+      return;
+    }
+    const updatedRequests = loadWeekendRequests();
+    updatedRequests.push({
+      date: weekendDates[dateIndex], from, to,
+      purpose: moduleContent.querySelector("#requestPurpose").value.trim(),
+      message: moduleContent.querySelector("#requestMessage").value.trim(),
+      user: currentUser.displayName,
+      createdAt: new Date().toISOString()
+    });
+    if (saveWeekendRequests(updatedRequests)) {
+      event.target.reset();
+      showToast("Die Zeitanfrage wurde an den Admin übermittelt.");
+    } else showToast("Die Anfrage konnte in diesem Browser nicht gespeichert werden.");
+  });
+
+  moduleContent.querySelectorAll("[data-delete-request]").forEach(button => {
+    button.addEventListener("click", () => {
+      const updatedRequests = loadWeekendRequests();
+      updatedRequests.splice(Number(button.dataset.deleteRequest), 1);
+      saveWeekendRequests(updatedRequests);
+      renderWeekendHallTimes(false);
+      showToast("Die Anfrage wurde als erledigt entfernt.");
+    });
+  });
+}
+
 function renderStandard(key, push = true) {
   const data = moduleData[key];
   if (push) historyStack.push({ type: "standard", key });
@@ -572,6 +816,7 @@ document.querySelectorAll("[data-module]").forEach(btn => {
     else if (key === "partners") renderPartners();
     else if (key === "gallery") renderGallery();
     else if (key === "about") renderAbout();
+    else if (key === "service") renderService();
     else renderStandard(key);
     openModal("moduleModal");
   });
@@ -591,6 +836,9 @@ moduleBack.addEventListener("click", () => {
   if (previous.type === "about") renderAbout(false);
   if (previous.type === "aboutPeople") renderAboutPeople(false);
   if (previous.type === "aboutPerson") renderAboutPerson(previous.personKey, false);
+  if (previous.type === "service") renderService(false);
+  if (previous.type === "trainingTimes") renderTrainingTimes(false);
+  if (previous.type === "weekendHallTimes") renderWeekendHallTimes(false);
   if (previous.type === "teamCategory") renderTeamCategory(previous.category, false);
   if (previous.type === "teamDetail") renderTeamDetail(previous.teamKey, false);
   if (previous.type === "youthTeam") renderYouthTeam(previous.teamKey, false);
