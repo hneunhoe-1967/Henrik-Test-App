@@ -8,234 +8,58 @@
   <title>Henrik-Test-Hawks</title>
   <link rel="manifest" href="manifest.webmanifest" />
   <link rel="apple-touch-icon" href="assets/icon-192.png" />
-  <link rel="stylesheet" href="styles.css?v=36" />
+  <link rel="stylesheet" href="styles.css?v=39" />
 </head>
 <body>
   <div class="app-shell">
     <header class="topbar">
       <div class="top-actions-left">
-        <button class="top-action" data-modal="requestModal" aria-label="Anfrage öffnen">
-          <span class="icon-circle">!</span>
-          <span>Anfrage</span>
-        </button>
-        <button class="top-action" id="chatRoomsButton" data-modal="chatRoomsModal" aria-label="Chat-Rooms öffnen">
-          <span class="icon-circle chat-icon">💬</span>
-          <span>Chat-Rooms</span>
-        </button>
+        <button class="top-action" data-modal="requestModal" aria-label="Anfrage öffnen"><span class="icon-circle">!</span><span>Anfrage</span></button>
+        <button class="top-action" id="chatRoomsButton" data-modal="chatRoomsModal" aria-label="Chat-Rooms öffnen"><span class="icon-circle chat-icon">💬</span><span>Chat-Rooms</span></button>
       </div>
-
-      <div class="brand" role="banner">
-        <div class="brand-mark">H</div>
-        <div>
-          <strong>Henrik-Test-Hawks</strong>
-          <small>TG Hochheim Basketball</small>
-        </div>
-      </div>
-
+      <div class="brand" role="banner"><div class="brand-mark">H</div><div><strong>Henrik-Test-Hawks</strong><small>TG Hochheim Basketball</small></div></div>
       <div class="top-actions-right">
         <button class="install-btn" id="installApp" hidden>App installieren</button>
-        <button class="top-action user-action" data-modal="userModal" aria-label="Benutzermenü öffnen">
-          <span class="user-icon">👤</span>
-          <span id="userDisplayName">Gast</span>
-        </button>
+        <button class="top-action user-action" data-modal="userModal" aria-label="Benutzermenü öffnen"><span class="user-icon">👤</span><span id="userDisplayName">Gast</span></button>
       </div>
     </header>
 
     <main>
-      <section class="hero">
-        <div class="hero-content">
-          <span class="eyebrow">TG Hochheim Hawks</span>
-          <h1>Dein digitaler Hawks-Hub</h1>
-          <p>News, Teams, Spielbetrieb, Service und Vereinsleben an einem Ort.</p>
-        </div>
-        <div class="hero-ball" aria-hidden="true"></div>
-      </section>
-
+      <section class="hero"><div class="hero-content"><span class="eyebrow">TG Hochheim Hawks</span><h1>Dein digitaler Hawks-Hub</h1><p>News, Teams, Spielbetrieb, Service und Vereinsleben an einem Ort.</p></div><div class="hero-ball" aria-hidden="true"></div></section>
       <section class="dashboard" aria-label="Hauptmodule">
-        <button class="module-card image-card news-card" data-module="news">
-          <img class="module-card-image" src="assets/newskachel.jpg" alt="Hawks News mit Basketballkorb" />
-          <span class="card-copy"><strong>News</strong><small>Artikel, Instagram & Website</small></span>
+        <button class="module-card image-card news-card" data-module="news"><img class="module-card-image" src="assets/newskachel.jpg" alt="Hawks News mit Basketballkorb" /><span class="card-copy"><strong>News</strong><small>Artikel, Instagram &amp; Website</small></span></button>
+        <button class="module-card image-card teams-card" data-module="teams"><img class="module-card-image" src="assets/teamskachel.jpg" alt="Silhouetten der Hawks-Mannschaften" /><span class="card-copy"><strong>Teams</strong><small>Männer-, Frauen- und Jugendmannschaften</small></span></button>
+
+        <button class="module-card image-card teams-card" id="myTeamsCard" data-module="myTeams" type="button" hidden>
+          <img class="module-card-image" src="assets/meine-teams-hawks.jpeg" alt="Meine Teams der Hawks mit Mannschaft unter einem Basketballkorb" />
+          <span class="card-copy"><strong>Meine Teams der Hawks</strong><small>Mannschaft A &amp; U18</small></span>
         </button>
-        <button class="module-card image-card teams-card" data-module="teams">
-          <img class="module-card-image" src="assets/teamskachel.jpg" alt="Silhouetten der Hawks-Mannschaften" />
-          <span class="card-copy"><strong>Teams</strong><small>Männer-, Frauen- und Jugendmannschaften</small></span>
-        </button>
-        <button class="module-card" data-module="games">
-          <span class="card-icon">🏆</span>
-          <span class="card-copy"><strong>Spielbetrieb</strong><small>Spiele, Termine, Tabellen</small></span>
-        </button>
-        <button class="module-card" data-module="about">
-          <span class="card-icon">🦅</span>
-          <span class="card-copy"><strong>Über uns</strong><small>Historie, Werte & Personen</small></span>
-        </button>
-        <button class="module-card" data-module="service">
-          <span class="card-icon">🧰</span>
-          <span class="card-copy"><strong>Service</strong><small>Hallen, Downloads, Anträge</small></span>
-        </button>
-        <button class="module-card" id="digitalModuleCard" data-module="digital">
-          <span class="card-icon">💻</span>
-          <span class="card-copy"><strong>Digitale Abteilung</strong><small>Abrechnung & Leitung</small></span>
-        </button>
-        <button class="module-card" data-module="partners">
-          <span class="card-icon">🤝</span>
-          <span class="card-copy"><strong>Partner & Sponsoren</strong><small>Verbände, Förderer & Unterstützer</small></span>
-        </button>
-        <button class="module-card image-card gallery-card" data-module="gallery">
-          <img class="module-card-image" src="assets/galeriekachel.jpg" alt="Legendäre Hawks-Momente mit Basketball" />
-          <span class="card-copy"><strong>Galerie / Momente</strong><small>Bilder, Videos & Erfolge</small></span>
-        </button>
+
+        <button class="module-card" data-module="games"><span class="card-icon">🏀</span><span class="card-copy"><strong>Spielbetrieb</strong><small>Spiele, Termine, Tabellen</small></span></button>
+        <button class="module-card" data-module="about"><span class="card-icon">🦅</span><span class="card-copy"><strong>Über uns</strong><small>Historie, Werte &amp; Personen</small></span></button>
+        <button class="module-card" data-module="service"><span class="card-icon">🛠️</span><span class="card-copy"><strong>Service</strong><small>Hallen, Downloads, Anträge</small></span></button>
+        <button class="module-card" id="digitalModuleCard" data-module="digital"><span class="card-icon">💻</span><span class="card-copy"><strong>Digitale Abteilung</strong><small>Abrechnung &amp; Leitung</small></span></button>
+        <button class="module-card" data-module="partners"><span class="card-icon">🤝</span><span class="card-copy"><strong>Partner &amp; Sponsoren</strong><small>Verbände, Förderer &amp; Unterstützer</small></span></button>
+        <button class="module-card image-card gallery-card" data-module="gallery"><img class="module-card-image" src="assets/galeriekachel.jpg" alt="Legendäre Hawks-Momente mit Basketball" /><span class="card-copy"><strong>Galerie / Momente</strong><small>Bilder, Videos &amp; Erfolge</small></span></button>
       </section>
     </main>
 
-    <footer class="footer">
-      <button data-modal="imprintModal">ⓘ <span>Impressum</span></button>
-      <button data-modal="contactModal">✉ <span>Kontakt</span></button>
-      <button data-modal="privacyModal">🔒 <span>Datenschutz</span></button>
-      <button data-modal="feedbackModal">💬 <span>Feedback</span></button>
-    </footer>
+    <footer class="footer"><button data-modal="imprintModal">ⓘ <span>Impressum</span></button><button data-modal="contactModal">✉ <span>Kontakt</span></button><button data-modal="privacyModal">🔒 <span>Datenschutz</span></button><button data-modal="feedbackModal">💬 <span>Feedback</span></button></footer>
   </div>
 
+  <div class="modal" id="chatRoomsModal" aria-hidden="true"><div class="modal-panel"><button class="close-modal" aria-label="Schließen">×</button><h2>Chat-Rooms</h2><p>Wähle den gewünschten Chat-Room:</p><div class="subgrid chat-room-grid"><button class="subcard orange" data-chat-room="Mannschaft A"><strong>Chat-Room Mannschaft A</strong></button><button class="subcard" data-chat-room="Mannschaft B"><strong>Chat-Room Mannschaft B</strong></button><button class="subcard" data-chat-room="Schiedsrichter"><strong>Chat-Room Schiedsrichter</strong></button><button class="subcard orange" data-chat-room="Trainer"><strong>Chat-Room Trainer</strong></button></div><div class="note">Die Chat-Räume sind als auswählbare Bereiche vorbereitet. Für echte Nachrichten, Benutzerkonten und Speicherung ist später eine Server- oder Datenbankanbindung erforderlich.</div></div></div>
 
-  <div class="modal" id="chatRoomsModal" aria-hidden="true">
-    <div class="modal-panel">
-      <button class="close-modal" aria-label="Schließen">×</button>
-      <h2>Chat-Rooms</h2>
-      <p>Wähle den gewünschten Chat-Room:</p>
-      <div class="subgrid chat-room-grid">
-        <button class="subcard orange" data-chat-room="Mannschaft A"><span class="subcard-icon">🏀</span><strong>Chat-Room Mannschaft A</strong></button>
-        <button class="subcard" data-chat-room="Mannschaft B"><span class="subcard-icon">🏀</span><strong>Chat-Room Mannschaft B</strong></button>
-        <button class="subcard" data-chat-room="Schiedsrichter"><span class="subcard-icon">🦓</span><strong>Chat-Room Schiedsrichter</strong></button>
-        <button class="subcard orange" data-chat-room="Trainer"><span class="subcard-icon">📋</span><strong>Chat-Room Trainer</strong></button>
-      </div>
-      <div class="note">Die Chat-Räume sind als auswählbare Bereiche vorbereitet. Für echte Nachrichten, Benutzerkonten und Speicherung ist später eine Server- oder Datenbankanbindung erforderlich.</div>
-    </div>
-  </div>
+  <div class="modal" id="userModal" aria-hidden="true"><div class="modal-panel compact"><button class="close-modal" aria-label="Schließen">×</button><div id="loginView"><h2>Log-in</h2><p>Mit einem Testbenutzer anmelden, um die Rollen und Berechtigungen zu prüfen.</p><form class="app-form" id="loginForm"><label>Benutzername<input id="loginName" name="username" type="text" autocomplete="username" required /></label><label>Passwort<input id="loginPassword" name="password" type="password" autocomplete="current-password" required /></label><p class="login-error" id="loginError" role="alert" hidden>Benutzername oder Passwort ist nicht korrekt.</p><button class="primary-btn" type="submit">Anmelden</button></form><div class="demo-credentials"><strong>Testzugänge</strong><span>Admin / Admin01</span><span>Spieler A / Spieler01</span></div></div><div id="accountView" hidden><h2>Benutzerkonto</h2><div class="account-summary"><span class="account-avatar">👤</span><div><strong id="accountName">Gast</strong><small id="accountRole">Rolle: Gast</small></div></div><button class="secondary-btn full-width" id="logoutButton" type="button">Abmelden</button></div><div class="note">Test-Prototyp: Zugangsdaten und Rollenprüfung laufen ausschließlich im Browser und stellen keine sichere Zugriffskontrolle dar.</div></div></div>
 
-  <div class="modal" id="userModal" aria-hidden="true">
-    <div class="modal-panel compact">
-      <button class="close-modal" aria-label="Schließen">×</button>
-      <div id="loginView">
-        <h2>Log-in</h2>
-        <p>Mit einem Testbenutzer anmelden, um die Rollen und Berechtigungen zu prüfen.</p>
-        <form class="app-form" id="loginForm">
-          <label>Benutzername
-            <input id="loginName" name="username" type="text" autocomplete="username" required />
-          </label>
-          <label>Passwort
-            <input id="loginPassword" name="password" type="password" autocomplete="current-password" required />
-          </label>
-          <p class="login-error" id="loginError" role="alert" hidden>Benutzername oder Passwort ist nicht korrekt.</p>
-          <button class="primary-btn" type="submit">Anmelden</button>
-        </form>
-        <div class="demo-credentials">
-          <strong>Testzugänge</strong>
-          <span>Admin / Admin01</span>
-          <span>Spieler A / Spieler01</span>
-        </div>
-      </div>
-      <div id="accountView" hidden>
-        <h2>Benutzerkonto</h2>
-        <div class="account-summary">
-          <span class="account-avatar">👤</span>
-          <div><strong id="accountName">Gast</strong><small id="accountRole">Rolle: Gast</small></div>
-        </div>
-        <button class="secondary-btn full-width" id="logoutButton" type="button">Abmelden</button>
-      </div>
-      <div class="note">Test-Prototyp: Zugangsdaten und Rollenprüfung laufen ausschließlich im Browser und stellen keine sichere Zugriffskontrolle dar.</div>
-    </div>
-  </div>
+  <div class="modal" id="requestModal" aria-hidden="true"><div class="modal-panel"><button class="close-modal" aria-label="Schließen">×</button><h2>Anfrage</h2><form class="app-form" data-demo-form><label>E-Mail-Adresse<input type="email" placeholder="name@beispiel.de" required /></label><label>Thema<select required><option value="">Bitte auswählen</option><option>Training</option><option>Spiel</option><option>Bitte Rückmeldung</option></select></label><label>Nachricht<textarea rows="6" placeholder="Worum geht es?" required></textarea></label><button class="primary-btn" type="submit">Anfrage senden</button></form></div></div>
+  <div class="modal" id="imprintModal" aria-hidden="true"><div class="modal-panel"><button class="close-modal" aria-label="Schließen">×</button><h2>Impressum</h2><div class="info-box"><strong>TG Hochheim Hawks</strong><p>Adresse: Musterstraße 1, 65239 Hochheim am Main</p><p>E-Mail: info@tg-hochheim-hawks.de</p><p>Homepage: www.tg-hochheim-hawks.de</p></div></div></div>
+  <div class="modal" id="contactModal" aria-hidden="true"><div class="modal-panel"><button class="close-modal" aria-label="Schließen">×</button><h2>Kontakt</h2><div class="contact-list"><div><strong>Vorstand</strong><a href="mailto:vorstand@tg-hochheim-hawks.de">vorstand@tg-hochheim-hawks.de</a></div><div><strong>Sportliche Leitung</strong><a href="mailto:sl@tg-hochheim-hawks.de">sl@tg-hochheim-hawks.de</a></div><div><strong>Spielbetrieb</strong><a href="mailto:spielbetrieb@tg-hochheim-hawks.de">spielbetrieb@tg-hochheim-hawks.de</a></div></div></div></div>
+  <div class="modal" id="privacyModal" aria-hidden="true"><div class="modal-panel"><button class="close-modal" aria-label="Schließen">×</button><h2>Datenschutzhinweis</h2><p>Der Schutz Ihrer personenbezogenen Daten ist uns wichtig. Diese Demo-App speichert grundsätzlich keine personenbezogenen Daten dauerhaft.</p><p>Bei externen Links und der Bereitstellung über GitHub Pages gelten zusätzlich die Datenschutzbestimmungen der jeweiligen Anbieter.</p><p>Stand: Juli 2026.</p></div></div>
+  <div class="modal" id="feedbackModal" aria-hidden="true"><div class="modal-panel"><button class="close-modal" aria-label="Schließen">×</button><h2>Feedback</h2><form class="app-form" data-demo-form><label>Dein Feedback<textarea rows="6" required></textarea></label><button class="primary-btn" type="submit">SEND</button></form></div></div>
 
-  <div class="modal" id="requestModal" aria-hidden="true">
-    <div class="modal-panel">
-      <button class="close-modal" aria-label="Schließen">×</button>
-      <h2>Anfrage</h2>
-      <form class="app-form" data-demo-form>
-        <label>E-Mail-Adresse<input type="email" placeholder="name@beispiel.de" required /></label>
-        <label>Thema
-          <select required>
-            <option value="">Bitte auswählen</option>
-            <option>Training</option>
-            <option>Spiel</option>
-            <option>Bitte Rückmeldung</option>
-          </select>
-        </label>
-        <label>Nachricht<textarea rows="6" placeholder="Worum geht es?" required></textarea></label>
-        <button class="primary-btn" type="submit">Anfrage senden</button>
-      </form>
-    </div>
-  </div>
-
-  <div class="modal" id="imprintModal" aria-hidden="true">
-    <div class="modal-panel">
-      <button class="close-modal" aria-label="Schließen">×</button>
-      <h2>Impressum</h2>
-      <div class="info-box">
-        <strong>TG Hochheim Hawks</strong>
-        <p>Adresse: Musterstraße 1, 65239 Hochheim am Main</p>
-        <p>E-Mail: info@tg-hochheim-hawks.de</p>
-        <p>Homepage: www.tg-hochheim-hawks.de</p>
-      </div>
-    </div>
-  </div>
-
-  <div class="modal" id="contactModal" aria-hidden="true">
-    <div class="modal-panel">
-      <button class="close-modal" aria-label="Schließen">×</button>
-      <h2>Kontakt</h2>
-      <div class="contact-list">
-        <div><strong>Vorstand</strong><a href="mailto:vorstand@tg-hochheim-hawks.de">vorstand@tg-hochheim-hawks.de</a></div>
-        <div><strong>Sportliche Leitung</strong><a href="mailto:sl@tg-hochheim-hawks.de">sl@tg-hochheim-hawks.de</a></div>
-        <div><strong>Spielbetrieb</strong><a href="mailto:spielbetrieb@tg-hochheim-hawks.de">spielbetrieb@tg-hochheim-hawks.de</a></div>
-      </div>
-    </div>
-  </div>
-
-  <div class="modal" id="privacyModal" aria-hidden="true">
-    <div class="modal-panel">
-      <button class="close-modal" aria-label="Schließen">×</button>
-      <h2>Datenschutzhinweis</h2>
-      <div class="privacy-text">
-        <p>Der Schutz Ihrer personenbezogenen Daten ist uns wichtig. Diese Web-App der <strong>TG Hochheim Hawks</strong> stellt Informationen rund um den Basketballbetrieb bereit.</p>
-        <h3>1. Verantwortliche Stelle</h3>
-        <p>TG Hochheim Hawks<br>Adresse: Musterstraße 1, 65239 Hochheim am Main<br>E-Mail: <a href="mailto:info@tg-hochheim-hawks.de">info@tg-hochheim-hawks.de</a></p>
-        <h3>2. Nutzung der App</h3>
-        <p>Die App speichert grundsätzlich keine personenbezogenen Daten dauerhaft. Daten, die Sie freiwillig über Anfrage- oder Feedbackformulare eingeben, werden in dieser Demo nur lokal verarbeitet und nicht an einen Server übertragen.</p>
-        <h3>3. Externe Links</h3>
-        <p>Beim Aufruf externer Angebote, etwa Instagram, HBV, DBBL oder verlinkter Webseiten, gelten die Datenschutzbestimmungen des jeweiligen Anbieters.</p>
-        <h3>4. Technische Bereitstellung</h3>
-        <p>Bei einer Veröffentlichung über GitHub Pages können technisch notwendige Verbindungsdaten durch den Hosting-Anbieter verarbeitet werden. Maßgeblich sind dessen Datenschutzinformationen.</p>
-        <h3>5. Ihre Rechte</h3>
-        <p>Sie haben im Rahmen der gesetzlichen Voraussetzungen insbesondere Rechte auf Auskunft, Berichtigung, Löschung, Einschränkung der Verarbeitung und Beschwerde bei einer Datenschutzaufsichtsbehörde.</p>
-        <p class="muted"><strong>Stand:</strong> Juli 2026. Dieser kompakte Hinweis ersetzt keine individuelle rechtliche Prüfung, sobald echte Benutzerkonten, Analyse-Dienste, Cookies oder serverseitige Formulare eingesetzt werden.</p>
-      </div>
-    </div>
-  </div>
-
-  <div class="modal" id="feedbackModal" aria-hidden="true">
-    <div class="modal-panel">
-      <button class="close-modal" aria-label="Schließen">×</button>
-      <h2>Feedback</h2>
-      <form class="app-form" data-demo-form>
-        <label>Dein Feedback<textarea rows="7" placeholder="Was gefällt dir? Was können wir verbessern?" required></textarea></label>
-        <button class="primary-btn" type="submit">SEND</button>
-      </form>
-    </div>
-  </div>
-
-  <div class="modal" id="moduleModal" aria-hidden="true">
-    <div class="modal-panel module-panel">
-      <button class="close-modal" aria-label="Schließen">×</button>
-      <button class="back-btn" id="moduleBack" hidden>← Zurück</button>
-      <div id="moduleContent"></div>
-    </div>
-  </div>
-
+  <div class="modal" id="moduleModal" aria-hidden="true"><div class="modal-panel module-panel"><button class="close-modal" aria-label="Schließen">×</button><button class="back-btn" id="moduleBack" type="button" hidden>← Zurück</button><div id="moduleContent"></div></div></div>
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
-  <script src="app.js?v=36"></script>
-  <script>
-    if ("serviceWorker" in navigator) {
-      window.addEventListener("load", () => navigator.serviceWorker.register("./service-worker.js"));
-    }
-  </script>
+
+  <script src="app.js?v=39"></script>
 </body>
 </html>
