@@ -1,4 +1,4 @@
-const CACHE_NAME = "henrik-test-hawks-v5-wochenendzeiten-1";
+const CACHE_NAME = "henrik-test-hawks-v6-meine-teams-1";
 const APP_FILES = [
   "./",
   "./index.html",
@@ -7,6 +7,7 @@ const APP_FILES = [
   "./manifest.webmanifest",
   "./assets/newskachel.jpg",
   "./assets/teamskachel.jpg",
+  "./assets/meine-teams-hawks.jpeg",
   "./assets/galeriekachel.jpg",
   "./assets/sebastian-basti-krause.png",
   "./assets/sebastian-krause-person.jpeg",

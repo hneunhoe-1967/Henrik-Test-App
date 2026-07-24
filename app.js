@@ -30,16 +30,19 @@ function isAdmin() { return currentUser.role === "admin"; }
 function isTeamA() { return currentUser.role === "teamA"; }
 function isPlayer() { return isTeamA(); }
 function canUseWeekendHallTimes() { return isAdmin() || isPlayer(); }
+function canUseMyTeams() { return isTeamA(); }
 function canUseChatRooms() { return isAdmin() || isTeamA(); }
 function canUseDigitalModule() { return isAdmin(); }
 
 function applyRolePermissions() {
   const chatButton = document.getElementById("chatRoomsButton");
   const digitalCard = document.getElementById("digitalModuleCard");
+  const myTeamsCard = document.getElementById("myTeamsCard");
   const userDisplayName = document.getElementById("userDisplayName");
 
   if (chatButton) chatButton.hidden = !canUseChatRooms();
   if (digitalCard) digitalCard.hidden = !canUseDigitalModule();
+  if (myTeamsCard) myTeamsCard.hidden = !canUseMyTeams();
   if (userDisplayName) userDisplayName.textContent = currentUser.displayName;
 
   document.querySelectorAll("[data-chat-room]").forEach(button => {
@@ -51,6 +54,9 @@ function applyRolePermissions() {
   if (openChat?.classList.contains("open") && !canUseChatRooms()) closeModal(openChat);
   const openModule = document.getElementById("moduleModal");
   if (openModule?.classList.contains("open") && !canUseDigitalModule() && historyStack.some(entry => entry.key === "digital")) {
+    closeModal(openModule);
+  }
+  if (openModule?.classList.contains("open") && !canUseMyTeams() && historyStack.some(entry => entry.type === "myTeams")) {
     closeModal(openModule);
   }
   updateUserModal();
@@ -723,6 +729,24 @@ function bindExternalLinks() {
   });
 }
 
+
+function renderMyTeams(push = true) {
+  if (!canUseMyTeams()) {
+    showToast("Dieser Bereich ist ausschließlich für die Rolle Spieler A freigeschaltet.");
+    return;
+  }
+  if (push) historyStack.push({ type: "myTeams" });
+  moduleContent.innerHTML = `
+    <div class="module-header"><span class="eyebrow">🏀 Persönlicher Bereich</span><h2>Meine Teams der Hawks</h2><p>Direkter Zugriff auf die Mannschaft A und die U18.</p></div>
+    <div class="subgrid">
+      <button class="subcard orange" data-my-team="menA"><span class="subcard-icon">⛹️‍♂️</span><strong>Mannschaft A</strong></button>
+      <button class="subcard" data-my-youth-team="u18"><span class="subcard-icon">🏀</span><strong>U18</strong></button>
+    </div>`;
+  moduleBack.hidden = historyStack.length <= 1;
+  moduleContent.querySelector('[data-my-team="menA"]')?.addEventListener("click", () => renderTeamDetail("menA"));
+  moduleContent.querySelector('[data-my-youth-team="u18"]')?.addEventListener("click", () => renderYouthTeam("u18"));
+}
+
 function renderTeams(push = true) {
   if (push) historyStack.push({ type: "teams" });
   moduleContent.innerHTML = `
@@ -744,7 +768,7 @@ function renderTeamCategory(category, push = true) {
     moduleContent.innerHTML = `
       <div class="module-header"><span class="eyebrow">🏀 Teams</span><h2>Jugend-Mannschaften</h2><p>Die Jugendteams können hier nach Altersklassen ergänzt werden.</p></div>
       <div class="subgrid">
-        ${["U18", "U16", "U14", "U12", "U10"].map((team, index) => `<button class="subcard ${index % 2 === 0 ? "orange" : ""}" ${team === "U16" ? 'data-youth-team="u16"' : ''}><span class="subcard-icon">👥</span><strong>${team}</strong></button>`).join("")}
+        ${["U18", "U16", "U14", "U12", "U10"].map((team, index) => `<button class="subcard ${index % 2 === 0 ? "orange" : ""}" ${(team === "U16" || team === "U18") ? `data-youth-team="${team.toLowerCase()}"` : ""}><span class="subcard-icon">👥</span><strong>${team}</strong></button>`).join("")}
       </div>
       <div class="note">Die U16 enthält bereits Informationen zum Trainer. Weitere Jugendteams können später ergänzt werden.</div>`;
     moduleBack.hidden = false;
@@ -763,6 +787,13 @@ function renderTeamCategory(category, push = true) {
 
 function renderYouthTeam(teamKey, push = true) {
   if (push) historyStack.push({ type: "youthTeam", teamKey });
+  if (teamKey === "u18") {
+    moduleContent.innerHTML = `
+      <div class="module-header"><span class="eyebrow">🏀 Jugend-Mannschaften</span><h2>U18</h2><p>Alle wichtigen Informationen und Funktionen der U18.</p></div>
+      <div class="item-list">${detailItems.map(item => `<div class="item-row"><span>${item[0]}</span><div><strong>${item[1]}</strong><div class="muted">Inhalt kann in GitHub ergänzt und mit echten Daten verbunden werden.</div></div></div>`).join("")}</div>`;
+    moduleBack.hidden = false;
+    return;
+  }
   if (teamKey !== "u16") return;
   moduleContent.innerHTML = `
     <div class="module-header"><span class="eyebrow">🏀 Jugend-Mannschaften</span><h2>U16</h2><p>Informationen zur Mannschaft und zum Trainer.</p></div>
@@ -806,11 +837,16 @@ document.querySelectorAll("[data-module]").forEach(btn => {
   btn.addEventListener("click", () => {
     historyStack = [];
     const key = btn.dataset.module;
+    if (key === "myTeams" && !canUseMyTeams()) {
+      showToast("Dieser Bereich ist ausschließlich für die Rolle Spieler A freigeschaltet.");
+      return;
+    }
     if (key === "digital" && !canUseDigitalModule()) {
       showToast("Die Digitale Abteilung ist nur für die Rolle Admin freigeschaltet.");
       return;
     }
-    if (key === "teams") renderTeams();
+    if (key === "myTeams") renderMyTeams();
+    else if (key === "teams") renderTeams();
     else if (key === "news") renderNews();
     else if (key === "games") renderGames();
     else if (key === "partners") renderPartners();
@@ -826,6 +862,7 @@ moduleBack.addEventListener("click", () => {
   if (historyStack.length <= 1) return;
   historyStack.pop();
   const previous = historyStack[historyStack.length - 1];
+  if (previous.type === "myTeams") renderMyTeams(false);
   if (previous.type === "teams") renderTeams(false);
   if (previous.type === "news") renderNews(false);
   if (previous.type === "newsArticles") renderNewsArticles(false);
